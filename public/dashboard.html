@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard – vTechZone</title>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+<style>
+  .dash-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:24px; }
+  .dash-stat { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px; }
+  .dash-stat .ds-icon { font-size:28px; margin-bottom:10px; }
+  .dash-stat .ds-num { font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--primary); }
+  .dash-stat .ds-lbl { font-size:13px; color:var(--text-light); margin-top:2px; }
+  .msg-row { display:flex; flex-direction:column; gap:12px; }
+  .msg-item { background:var(--light); border-radius:var(--radius); padding:16px 20px; border-left:3px solid var(--primary); }
+  .msg-item .msg-text { font-size:14px; line-height:1.6; color:var(--text); margin-bottom:6px; }
+  .msg-item .msg-meta { font-size:12px; color:var(--text-light); }
+  .qa-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+  .qa-btn { display:flex; flex-direction:column; align-items:center; gap:8px; padding:20px 12px; background:var(--light); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; transition:var(--transition); text-decoration:none; color:var(--text); font-size:13px; font-weight:600; }
+  .qa-btn:hover { background:rgba(0,85,255,0.06); border-color:var(--primary); color:var(--primary); transform:translateY(-2px); }
+  .qa-btn .qa-icon { font-size:26px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="navbar scrolled" style="background:white;">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">⚡</div>
+      <span>v<span>Tech</span>Zone</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="btn btn-outline btn-sm">🏠 Home</a>
+      <button onclick="doLogout()" class="btn btn-primary btn-sm">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-page">
+  <!-- Header banner -->
+  <div class="dashboard-header">
+    <div class="container">
+      <div class="welcome-text">
+        <h1 id="welcomeMsg">Welcome back! 👋</h1>
+        <p>Manage your vTechZone account and messages</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="container">
+    <div class="dashboard-grid">
+
+      <!-- SIDEBAR -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-avatar">
+          <div class="avatar-circle" id="avatarCircle">U</div>
+          <h3 id="sidebarName">Loading…</h3>
+          <p id="sidebarEmail">—</p>
+          <span class="sidebar-badge">👤 User</span>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-link active" id="slink-overview" onclick="showTab('overview',this)">
+            <span class="icon">📊</span> Overview
+          </div>
+          <div class="sidebar-link" id="slink-messages" onclick="showTab('messages',this)">
+            <span class="icon">💬</span> My Messages
+          </div>
+          <div class="sidebar-link" id="slink-profile" onclick="showTab('profile',this)">
+            <span class="icon">👤</span> My Profile
+          </div>
+          <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+          <a href="services.html" class="sidebar-link"><span class="icon">🔧</span> Services</a>
+          <a href="contact.html" class="sidebar-link"><span class="icon">📬</span> Contact</a>
+          <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+          <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);">
+            <span class="icon">🚪</span> Logout
+          </div>
+        </nav>
+      </aside>
+
+      <!-- MAIN -->
+      <div class="dashboard-content">
+
+        <!-- OVERVIEW TAB -->
+        <div id="tab-overview">
+          <div class="dash-stat-grid">
+            <div class="dash-stat">
+              <div class="ds-icon">💬</div>
+              <div class="ds-num" id="statMsgs">0</div>
+              <div class="ds-lbl">Messages Sent</div>
+            </div>
+            <div class="dash-stat">
+              <div class="ds-icon">✅</div>
+              <div class="ds-num" style="color:var(--success);">Active</div>
+              <div class="ds-lbl">Account Status</div>
+            </div>
+            <div class="dash-stat">
+              <div class="ds-icon">🌟</div>
+              <div class="ds-num" style="font-size:22px;color:var(--text);">Member</div>
+              <div class="ds-lbl">Account Type</div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <h2>Quick Actions</h2>
+            <div class="qa-grid">
+              <a href="contact.html" class="qa-btn"><span class="qa-icon">📬</span>Send Message</a>
+              <a href="services.html" class="qa-btn"><span class="qa-icon">🔧</span>Our Services</a>
+              <a href="projects.html" class="qa-btn"><span class="qa-icon">💼</span>Projects</a>
+              <div class="qa-btn" onclick="showTab('messages',document.getElementById('slink-messages'))">
+                <span class="qa-icon">💬</span>My Messages
+              </div>
+              <div class="qa-btn" onclick="showTab('profile',document.getElementById('slink-profile'))">
+                <span class="qa-icon">👤</span>My Profile
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <h2>Recent Messages</h2>
+            <div id="recentMsgs">
+              <div style="text-align:center;padding:30px;color:var(--text-light);">
+                <div class="spinner dark" style="margin:0 auto 12px;"></div>
+                Loading…
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MESSAGES TAB -->
+        <div id="tab-messages" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <h2 style="margin:0;">My Messages</h2>
+              <a href="contact.html" class="btn btn-primary btn-sm">+ New Message</a>
+            </div>
+            <div id="allMsgsWrap">
+              <div style="text-align:center;padding:40px;color:var(--text-light);">
+                <div class="spinner dark" style="margin:0 auto 12px;"></div>
+                Loading messages…
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div id="tab-profile" style="display:none;">
+          <div class="dash-card" style="max-width:480px;">
+            <h2>My Profile</h2>
+            <div style="text-align:center;padding:20px 0 28px;border-bottom:1px solid var(--border);margin-bottom:24px;">
+              <div class="avatar-circle" id="profileAvatar" style="margin:0 auto 14px;width:80px;height:80px;font-size:34px;">U</div>
+              <h3 id="profileName" style="font-family:var(--font-display);font-size:20px;font-weight:700;">—</h3>
+              <p id="profileEmail" style="color:var(--text-light);font-size:14px;margin-top:4px;">—</p>
+              <span class="sidebar-badge" style="margin-top:10px;display:inline-block;">👤 User Account</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="background:var(--light);border-radius:var(--radius);padding:14px 16px;">
+                <div style="font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Full Name</div>
+                <div id="pName" style="font-weight:600;">—</div>
+              </div>
+              <div style="background:var(--light);border-radius:var(--radius);padding:14px 16px;">
+                <div style="font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Email Address</div>
+                <div id="pEmail" style="font-weight:600;">—</div>
+              </div>
+              <div style="background:var(--light);border-radius:var(--radius);padding:14px 16px;">
+                <div style="font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Account Role</div>
+                <div style="font-weight:600;">User</div>
+              </div>
+            </div>
+            <div style="margin-top:20px;padding:16px;background:rgba(0,85,255,0.05);border-radius:var(--radius);font-size:14px;color:var(--text-light);">
+              💡 To update your profile, contact us at <strong>info@vtechzone.in</strong>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dashboard-content -->
+    </div><!-- /dashboard-grid -->
+  </div><!-- /container -->
+</div><!-- /dashboard-page -->
+
+<script src="js/api.js"></script>
+<script>
+  // Auth guard
+  if (!isLoggedIn()) { window.location.href = 'login.html'; }
+  if (isAdmin())     { window.location.href = 'admin.html'; }
+
+  const user = getUser();
+  if (user) {
+    document.getElementById('welcomeMsg').textContent   = `Welcome back, ${user.name}! 👋`;
+    document.getElementById('sidebarName').textContent  = user.name;
+    document.getElementById('sidebarEmail').textContent = user.email;
+    ['avatarCircle','profileAvatar'].forEach(id => document.getElementById(id).textContent = user.name[0].toUpperCase());
+    document.getElementById('profileName').textContent  = user.name;
+    document.getElementById('profileEmail').textContent = user.email;
+    document.getElementById('pName').textContent        = user.name;
+    document.getElementById('pEmail').textContent       = user.email;
+  }
+
+  function showTab(name, clickedEl) {
+    ['overview','messages','profile'].forEach(t => {
+      document.getElementById('tab-'+t).style.display = t === name ? 'flex' : 'none';
+      document.getElementById('tab-'+t).style.flexDirection = 'column';
+    });
+    document.querySelectorAll('.sidebar-nav .sidebar-link').forEach(l => l.classList.remove('active'));
+    if (clickedEl) clickedEl.classList.add('active');
+    if (name === 'messages') loadMessages();
+    if (name === 'overview') loadRecentMessages();
+  }
+  // Make sure overview is flex
+  document.getElementById('tab-overview').style.display = 'flex';
+  document.getElementById('tab-overview').style.flexDirection = 'column';
+
+  function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+
+  async function loadMessages() {
+    const wrap = document.getElementById('allMsgsWrap');
+    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>';
+    try {
+      const { ok, data } = await apiRequest('/contact/messages/user', 'GET', null, true);
+      if (ok && data.messages && data.messages.length) {
+        document.getElementById('statMsgs').textContent = data.messages.length;
+        wrap.innerHTML = '<div class="msg-row">' +
+          data.messages.map(m => `
+            <div class="msg-item">
+              <div class="msg-text">${escHtml(m.message)}</div>
+              <div class="msg-meta">📅 ${new Date(m.created_at || Date.now()).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}</div>
+            </div>`).join('') + '</div>';
+      } else {
+        wrap.innerHTML = `<div style="text-align:center;padding:48px 20px;color:var(--text-light);">
+          <div style="font-size:48px;margin-bottom:12px;">💬</div>
+          <p>No messages yet.</p>
+          <a href="contact.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Send Your First Message →</a>
+        </div>`;
+      }
+    } catch {
+      wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--error);">⚠️ Could not load messages. Is the backend running?</div>';
+    }
+  }
+
+  async function loadRecentMessages() {
+    const wrap = document.getElementById('recentMsgs');
+    try {
+      const { ok, data } = await apiRequest('/contact/messages/user', 'GET', null, true);
+      if (ok && data.messages && data.messages.length) {
+        document.getElementById('statMsgs').textContent = data.messages.length;
+        const recent = data.messages.slice(0, 3);
+        wrap.innerHTML = '<div class="msg-row">' +
+          recent.map(m => `
+            <div class="msg-item">
+              <div class="msg-text">${escHtml(m.message.substring(0, 120))}${m.message.length > 120 ? '…' : ''}</div>
+              <div class="msg-meta">📅 ${new Date(m.created_at || Date.now()).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}</div>
+            </div>`).join('') + '</div>' +
+          (data.messages.length > 3 ? `<div style="margin-top:12px;text-align:right;"><button onclick="showTab('messages',document.getElementById('slink-messages'))" class="btn btn-outline btn-sm">View All Messages →</button></div>` : '');
+      } else {
+        wrap.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-light);">
+          <p>No messages yet. <a href="contact.html" style="color:var(--primary);font-weight:600;">Send one now →</a></p>
+        </div>`;
+      }
+    } catch {
+      wrap.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:24px;">Could not load messages.</p>';
+    }
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  loadRecentMessages();
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Projects – vTechZone</title>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+</head>
+<body>
+<div class="loading-overlay" id="loader"><div class="loading-logo">vTechZone</div><div class="spinner dark"></div></div>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span>v<span>Tech</span>Zone</span></a>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="projects.html" class="nav-link active">Projects</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline btn-sm nav-login">Login</a>
+      <a href="signup.html" class="btn btn-primary btn-sm nav-signup">Sign Up</a>
+      <div class="nav-user nav-user-menu" style="display:none"><span>👤</span><span class="nav-user-name">User</span><span>▾</span></div>
+    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <span class="mobile-close" id="mobileClose">✕</span>
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="services.html" class="nav-link">🔧 Services</a>
+  <a href="projects.html" class="nav-link active">💼 Projects</a>
+  <a href="contact.html" class="nav-link">📬 Contact</a>
+</div>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Projects</span></div>
+    <h1>Our Projects</h1>
+    <p>Sample projects we've built for students and businesses</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:50px;">
+      <div class="section-tag">💼 Portfolio</div>
+      <h2 class="section-title">Projects We've Delivered</h2>
+      <p class="section-subtitle">From student academic projects to full business software — here's a glimpse of our work.</p>
+    </div>
+    <div class="projects-grid" id="projectsGrid">
+      <!-- Dynamic content loaded from API -->
+      <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light)">
+        <div class="spinner dark" style="margin:0 auto 16px;"></div>
+        Loading projects...
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--light);padding:80px 0;">
+  <div class="container text-center">
+    <div class="section-tag">🎓 Student Help</div>
+    <h2 class="section-title">Need Your Project Done?</h2>
+    <p class="section-subtitle">We help BCA, MCA, B.Tech and other students build excellent projects with full documentation and presentation support.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:700px;margin:0 auto 40px;">
+      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🎓</div>
+        <h4 style="font-family:var(--font-display);font-weight:700;">BCA Final Year</h4>
+        <p style="font-size:13px;color:var(--text-light);">Complete project + docs</p>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🏆</div>
+        <h4 style="font-family:var(--font-display);font-weight:700;">MCA Projects</h4>
+        <p style="font-size:13px;color:var(--text-light);">Research + development</p>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">⚡</div>
+        <h4 style="font-family:var(--font-display);font-weight:700;">B.Tech / BE</h4>
+        <p style="font-size:13px;color:var(--text-light);">Advanced tech projects</p>
+      </div>
+    </div>
+    <a href="contact.html" class="btn btn-primary btn-lg">Request Your Project →</a>
+  </div>
+</section>
+
+<!-- Founded by Vikram strip -->
+<div style="background:var(--dark);padding:28px 0;">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <img src="images/vikram.jpg" alt="Vikram" style="width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:center 25%;border:2px solid var(--accent);flex-shrink:0;"/>
+      <div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:white;">Founded by <span style="color:var(--accent);">Vikram</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.45);">Founder &amp; Owner, vTechZone</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="tel:+918604614912" style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;">📞 +91 86046 14912</a>
+        <a href="https://wa.me/918604614912" target="_blank" style="display:flex;align-items:center;gap:6px;color:var(--accent);font-size:13px;text-decoration:none;font-weight:600;">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="color:white;"><div class="logo-icon">⚡</div><span>v<span style="color:var(--accent)">Tech</span>Zone</span></a>
+        <p>Your one-stop technology solution center.</p>
+        <div class="footer-social"><a href="#" class="social-btn">📘</a><a href="#" class="social-btn">📷</a><a href="#" class="social-btn">💬</a></div>
+      </div>
+      <div class="footer-col"><h4>Services</h4><div class="footer-links"><a href="services.html">Laptop Repair</a><a href="services.html">Computer Hardware</a><a href="services.html">Software Development</a><a href="services.html">Student Projects</a></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="contact.html">Contact</a><a href="login.html">Login</a></div></div>
+      <div class="footer-col"><h4>Contact</h4><div class="footer-links"><a href="mailto:techzone.it.2025@gmail.com">📧 techzone.it.2025@gmail.com</a><a href="tel:+918604614912">📞 +91 86046 14912</a><a href="https://wa.me/918604614912" target="_blank">💬 WhatsApp Us</a><a href="#">📍 Near VBSPU, Shahganj Road, Jaunpur UP</a></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 <a href="index.html">vTechZone</a>. All rights reserved. Founded by <strong style="color:var(--accent);">Vikram</strong></span><span>Crafted with ❤️ in Jaunpur, India</span></div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400));
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+document.querySelectorAll('.nav-user-menu').forEach(el => el.addEventListener('click', () => {
+  window.location.href = isAdmin() ? 'admin.html' : 'dashboard.html';
+}));
+
+// Load projects
+const emojis = ['💻','🌐','📱','🏥','🛒','📚','🗳️','📦','🔐','📊'];
+async function loadProjects() {
+  try {
+    const { ok, data } = await apiRequest('/projects');
+    const grid = document.getElementById('projectsGrid');
+    if (ok && data.projects && data.projects.length > 0) {
+      grid.innerHTML = data.projects.map((p, i) => `
+        <div class="project-card fade-in">
+          <div class="project-number">${String(i+1).padStart(2,'0')}</div>
+          <div style="font-size:36px;margin-bottom:12px;">${emojis[i % emojis.length]}</div>
+          <h3>${p.title}</h3>
+          <div class="project-tech">⚙️ ${p.technology}</div>
+          <p>${p.description}</p>
+          <div style="margin-top:16px;">
+            <a href="contact.html" class="btn btn-outline btn-sm">Get Similar Project</a>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light)">No projects found.</div>';
+    }
+  } catch (e) {
+    // Fallback dummy data
+    const dummy = [
+      { title:'Hospital Management System', technology:'PHP, MySQL, Bootstrap', description:'Patient records, doctor scheduling, billing & pharmacy management for medical institutions.' },
+      { title:'E-Commerce Website', technology:'Node.js, React, MongoDB', description:'Full-featured shopping platform with cart, payment gateway, and admin panel.' },
+      { title:'Attendance System', technology:'Python, Django, SQLite', description:'Smart attendance with facial recognition, automated reports, and email alerts.' },
+      { title:'Library Management', technology:'Java, MySQL, Swing', description:'Book catalog, member management, issue/return tracking, and fine calculation.' },
+      { title:'Online Voting System', technology:'PHP, MySQL, JavaScript', description:'Secure voting platform with OTP verification and real-time result tracking.' },
+      { title:'Inventory Management', technology:'ASP.NET, SQL Server', description:'Stock tracking, purchase orders, sales reports and barcode support.' }
+    ];
+    document.getElementById('projectsGrid').innerHTML = dummy.map((p, i) => `
+      <div class="project-card fade-in">
+        <div class="project-number">${String(i+1).padStart(2,'0')}</div>
+        <div style="font-size:36px;margin-bottom:12px;">${emojis[i]}</div>
+        <h3>${p.title}</h3>
+        <div class="project-tech">⚙️ ${p.technology}</div>
+        <p>${p.description}</p>
+        <div style="margin-top:16px;"><a href="contact.html" class="btn btn-outline btn-sm">Get Similar Project</a></div>
+      </div>
+    `).join('');
+  }
+}
+updateNavAuth();
+loadProjects();
+</script>
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/918604614912" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  💬
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+</a>
+</body>
+</html>

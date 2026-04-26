@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign Up – vTechZone</title>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+</head>
+<body>
+<nav class="navbar scrolled"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span>v<span>Tech</span>Zone</span></a>
+  <div style="font-size:14px;color:var(--text-light)">Already have an account? <a href="login.html" style="color:var(--primary);font-weight:600">Sign In</a></div>
+</div></nav>
+
+<div class="auth-page">
+  <div class="auth-card" style="max-width:480px;">
+    <div class="auth-logo">
+      <div class="logo-icon">⚡</div>
+      <h2>Create Account</h2>
+      <p>Join vTechZone – it's free!</p>
+    </div>
+
+    <div class="alert alert-success" id="successAlert">✅ Account created! Redirecting to login...</div>
+    <div class="alert alert-error" id="errorAlert"></div>
+
+    <form id="signupForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="name">Full Name</label>
+        <input class="form-input" id="name" type="text" placeholder="e.g. Rahul Sharma" required autofocus/>
+        <div class="form-error" id="nameError">Please enter your full name.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input class="form-input" id="email" type="email" placeholder="you@email.com" required/>
+        <div class="form-error" id="emailError">Please enter a valid email.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div style="position:relative;">
+          <input class="form-input" id="password" type="password" placeholder="Minimum 6 characters" required style="padding-right:50px;"/>
+          <button type="button" id="togglePwd" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-light);">👁</button>
+        </div>
+        <div class="form-error" id="pwdError">Password must be at least 6 characters.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirm">Confirm Password</label>
+        <input class="form-input" id="confirm" type="password" placeholder="Re-enter password" required/>
+        <div class="form-error" id="confirmError">Passwords do not match.</div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" id="signupBtn">
+        Create Account →
+      </button>
+    </form>
+    <div class="auth-footer">Already have an account? <a href="login.html">Sign In</a></div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+if (isLoggedIn()) window.location.href = 'dashboard.html';
+
+document.getElementById('togglePwd').addEventListener('click', function() {
+  const pwd = document.getElementById('password');
+  pwd.type = pwd.type === 'password' ? 'text' : 'password';
+  this.textContent = pwd.type === 'password' ? '👁' : '🙈';
+});
+
+function setErr(fieldId, errId, show) {
+  document.getElementById(fieldId).classList.toggle('error', show);
+  document.getElementById(errId).classList.toggle('show', show);
+}
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm').value;
+  let valid = true;
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  setErr('name','nameError', !name); if (!name) valid = false;
+  setErr('email','emailError', !emailRe.test(email)); if (!emailRe.test(email)) valid = false;
+  setErr('password','pwdError', password.length < 6); if (password.length < 6) valid = false;
+  setErr('confirm','confirmError', password !== confirm); if (password !== confirm) valid = false;
+  if (!valid) return;
+
+  const btn = document.getElementById('signupBtn');
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;"></div> Creating...';
+  btn.disabled = true;
+  document.getElementById('errorAlert').classList.remove('show');
+
+  try {
+    const { ok, data } = await apiRequest('/auth/signup', 'POST', { name, email, password });
+    if (ok) {
+      document.getElementById('successAlert').classList.add('show');
+      setTimeout(() => window.location.href = 'login.html', 2000);
+    } else {
+      document.getElementById('errorAlert').textContent = '❌ ' + (data.message || 'Signup failed.');
+      document.getElementById('errorAlert').classList.add('show');
+    }
+  } catch {
+    document.getElementById('errorAlert').textContent = '❌ Network error. Make sure backend is running.';
+    document.getElementById('errorAlert').classList.add('show');
+  } finally {
+    btn.innerHTML = 'Create Account →';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

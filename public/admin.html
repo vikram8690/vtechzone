@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel – vTechZone</title>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
+<style>
+  .admin-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin-bottom:24px; }
+  .admin-stat { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px; }
+  .admin-stat .as-icon { font-size:28px; margin-bottom:10px; }
+  .admin-stat .as-num { font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--primary); }
+  .admin-stat .as-lbl { font-size:13px; color:var(--text-light); margin-top:2px; }
+  .qa-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:12px; }
+  .qa-btn { display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 12px;background:var(--light);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:var(--transition);text-align:center;font-size:13px;font-weight:600;color:var(--text); }
+  .qa-btn:hover { background:rgba(0,85,255,0.06);border-color:var(--primary);color:var(--primary);transform:translateY(-2px); }
+  .qa-btn .qa-icon { font-size:24px; }
+  /* Table tweaks */
+  .admin-table td { vertical-align:middle; }
+  .td-trunc { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; color:var(--text-light); }
+  /* Form inside modal */
+  #svc-modal .form-group, #proj-modal .form-group { margin-bottom:16px; }
+  #svc-modal label, #proj-modal label { font-size:13px; font-weight:600; display:block; margin-bottom:6px; }
+  /* Confirm modal */
+  .confirm-body { text-align:center; padding:8px 0 8px; }
+  .confirm-body .c-icon { font-size:48px; margin-bottom:12px; }
+  .confirm-body h3 { font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:8px; }
+  .confirm-body p { color:var(--text-light); font-size:14px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="navbar scrolled" style="background:white;">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">⚡</div>
+      <span>v<span>Tech</span>Zone</span>
+      <span style="font-size:12px;background:var(--primary);color:white;padding:3px 10px;border-radius:50px;margin-left:6px;font-family:var(--font-body);">ADMIN</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="btn btn-outline btn-sm">🌐 Website</a>
+      <button onclick="doLogout()" class="btn btn-primary btn-sm">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-page">
+  <!-- Admin header band -->
+  <div class="admin-header">
+    <div class="container">
+      <h1>⚙️ Admin Panel</h1>
+      <p>Manage your vTechZone website content</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:30px;padding-bottom:40px;">
+
+    <!-- Sidebar + content grid -->
+    <div class="dashboard-grid">
+
+      <!-- SIDEBAR -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-avatar">
+          <div class="avatar-circle" id="adminAvatar" style="background:linear-gradient(135deg,#0055FF,#FF6B35);">A</div>
+          <h3 id="adminName">Admin</h3>
+          <p id="adminEmail">—</p>
+          <span class="sidebar-badge" style="background:rgba(255,107,53,0.12);color:#FF6B35;">⚙️ Administrator</span>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-link active" id="alink-overview" onclick="showPanel('overview',this)"><span class="icon">📊</span> Overview</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);padding:12px 16px 4px;">Content</div>
+          <div class="sidebar-link" id="alink-messages" onclick="showPanel('messages',this)"><span class="icon">💬</span> Messages</div>
+          <div class="sidebar-link" id="alink-services" onclick="showPanel('services',this)"><span class="icon">🔧</span> Services</div>
+          <div class="sidebar-link" id="alink-projects" onclick="showPanel('projects',this)"><span class="icon">📁</span> Projects</div>
+          <div class="sidebar-link" id="alink-users" onclick="showPanel('users',this)"><span class="icon">👥</span> Users</div>
+          <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+          <a href="index.html" class="sidebar-link"><span class="icon">🌐</span> View Website</a>
+          <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);"><span class="icon">🚪</span> Logout</div>
+        </nav>
+      </aside>
+
+      <!-- PANELS -->
+      <div class="dashboard-content">
+
+        <!-- ====== OVERVIEW ====== -->
+        <div id="panel-overview">
+          <div class="admin-stat-grid">
+            <div class="admin-stat"><div class="as-icon">💬</div><div class="as-num" id="os-msgs">—</div><div class="as-lbl">Messages</div></div>
+            <div class="admin-stat"><div class="as-icon">🔧</div><div class="as-num" id="os-svcs">—</div><div class="as-lbl">Services</div></div>
+            <div class="admin-stat"><div class="as-icon">📁</div><div class="as-num" id="os-projs">—</div><div class="as-lbl">Projects</div></div>
+            <div class="admin-stat"><div class="as-icon">👥</div><div class="as-num" id="os-users">—</div><div class="as-lbl">Users</div></div>
+          </div>
+          <div class="dash-card">
+            <h2>Quick Actions</h2>
+            <div class="qa-grid">
+              <div class="qa-btn" onclick="showPanel('messages',document.getElementById('alink-messages'))"><span class="qa-icon">💬</span>View Messages</div>
+              <div class="qa-btn" onclick="openSvcModal()"><span class="qa-icon">➕</span>Add Service</div>
+              <div class="qa-btn" onclick="openProjModal()"><span class="qa-icon">➕</span>Add Project</div>
+              <div class="qa-btn" onclick="showPanel('users',document.getElementById('alink-users'))"><span class="qa-icon">👥</span>Manage Users</div>
+              <div class="qa-btn" onclick="showPanel('services',document.getElementById('alink-services'))"><span class="qa-icon">🔧</span>Services</div>
+              <div class="qa-btn" onclick="showPanel('projects',document.getElementById('alink-projects'))"><span class="qa-icon">📁</span>Projects</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== MESSAGES ====== -->
+        <div id="panel-messages" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <h2 style="margin:0;">Contact Messages</h2>
+              <button onclick="loadMessages()" class="btn btn-outline btn-sm">🔄 Refresh</button>
+            </div>
+            <div id="msgs-wrap">
+              <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== SERVICES ====== -->
+        <div id="panel-services" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <h2 style="margin:0;">Manage Services</h2>
+              <button onclick="openSvcModal()" class="btn btn-primary btn-sm">➕ Add Service</button>
+            </div>
+            <div id="svcs-wrap">
+              <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== PROJECTS ====== -->
+        <div id="panel-projects" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <h2 style="margin:0;">Manage Projects</h2>
+              <button onclick="openProjModal()" class="btn btn-primary btn-sm">➕ Add Project</button>
+            </div>
+            <div id="projs-wrap">
+              <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== USERS ====== -->
+        <div id="panel-users" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <h2 style="margin:0;">Manage Users</h2>
+              <button onclick="loadUsers()" class="btn btn-outline btn-sm">🔄 Refresh</button>
+            </div>
+            <div id="users-wrap">
+              <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dashboard-content -->
+    </div><!-- /dashboard-grid -->
+  </div><!-- /container -->
+</div><!-- /admin-page -->
+
+<!-- ====== SERVICE MODAL ====== -->
+<div class="modal-overlay" id="svc-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="svc-modal-title">Add Service</h3>
+      <button class="modal-close" onclick="closeModal('svc-modal')">✕</button>
+    </div>
+    <div class="alert" id="svc-alert"></div>
+    <input type="hidden" id="svc-id"/>
+    <div class="form-group">
+      <label>Icon / Emoji *</label>
+      <input class="form-input" id="svc-image" type="text" placeholder="e.g. 💻 or 🔧"/>
+    </div>
+    <div class="form-group">
+      <label>Service Title *</label>
+      <input class="form-input" id="svc-title" type="text" placeholder="e.g. Laptop Repair"/>
+    </div>
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea class="form-textarea" id="svc-desc" rows="4" placeholder="Describe the service…"></textarea>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <button class="btn btn-outline" onclick="closeModal('svc-modal')" style="flex:1;justify-content:center;">Cancel</button>
+      <button class="btn btn-primary" id="svc-save-btn" onclick="saveService()" style="flex:1;justify-content:center;">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PROJECT MODAL ====== -->
+<div class="modal-overlay" id="proj-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="proj-modal-title">Add Project</h3>
+      <button class="modal-close" onclick="closeModal('proj-modal')">✕</button>
+    </div>
+    <div class="alert" id="proj-alert"></div>
+    <input type="hidden" id="proj-id"/>
+    <div class="form-group">
+      <label>Project Title *</label>
+      <input class="form-input" id="proj-title" type="text" placeholder="e.g. Hospital Management System"/>
+    </div>
+    <div class="form-group">
+      <label>Technology Used *</label>
+      <input class="form-input" id="proj-tech" type="text" placeholder="e.g. PHP, MySQL, Bootstrap"/>
+    </div>
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea class="form-textarea" id="proj-desc" rows="4" placeholder="Brief project description…"></textarea>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <button class="btn btn-outline" onclick="closeModal('proj-modal')" style="flex:1;justify-content:center;">Cancel</button>
+      <button class="btn btn-primary" id="proj-save-btn" onclick="saveProject()" style="flex:1;justify-content:center;">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CONFIRM DELETE MODAL ====== -->
+<div class="modal-overlay" id="del-modal">
+  <div class="modal" style="max-width:400px;">
+    <div class="confirm-body">
+      <div class="c-icon">🗑️</div>
+      <h3>Delete Confirmation</h3>
+      <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-outline" onclick="closeModal('del-modal')" style="flex:1;justify-content:center;">Cancel</button>
+      <button class="btn btn-primary" id="del-confirm-btn" style="flex:1;justify-content:center;background:var(--error);box-shadow:none;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+/* ====== AUTH GUARD ====== */
+if (!isLoggedIn() || !isAdmin()) { window.location.href = 'login.html'; }
+
+const user = getUser();
+if (user) {
+  document.getElementById('adminAvatar').textContent = user.name[0].toUpperCase();
+  document.getElementById('adminName').textContent   = user.name;
+  document.getElementById('adminEmail').textContent  = user.email;
+}
+
+/* ====== HELPERS ====== */
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function setAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = (type==='error' ? '❌ ' : '✅ ') + msg;
+  el.className = 'alert alert-' + type + ' show';
+}
+
+function setBtnLoading(btnId, loading, text) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<div class="spinner" style="width:16px;height:16px;border-top-color:white;"></div> Saving…'
+    : text;
+}
+
+function loading(wrapId) {
+  document.getElementById(wrapId).innerHTML =
+    '<div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>';
+}
+
+/* ====== PANEL SWITCHING ====== */
+const PANELS = ['overview','messages','services','projects','users'];
+function showPanel(name, clickedEl) {
+  PANELS.forEach(p => { document.getElementById('panel-'+p).style.display = p===name ? 'block' : 'none'; });
+  document.querySelectorAll('.sidebar-nav .sidebar-link').forEach(l => l.classList.remove('active'));
+  if (clickedEl) clickedEl.classList.add('active');
+  const loaders = { messages: loadMessages, services: loadServices, projects: loadProjects, users: loadUsers };
+  if (loaders[name]) loaders[name]();
+}
+
+/* ====== OVERVIEW STATS ====== */
+async function loadStats() {
+  try {
+    const [msgs, svcs, projs, users] = await Promise.allSettled([
+      apiRequest('/contact/messages','GET',null,true),
+      apiRequest('/services'),
+      apiRequest('/projects'),
+      apiRequest('/users','GET',null,true)
+    ]);
+    const count = (r, key) => r.status==='fulfilled' && r.value.ok ? (r.value.data[key]||[]).length : '—';
+    document.getElementById('os-msgs').textContent  = count(msgs,  'messages');
+    document.getElementById('os-svcs').textContent  = count(svcs,  'services');
+    document.getElementById('os-projs').textContent = count(projs, 'projects');
+    document.getElementById('os-users').textContent = count(users, 'users');
+  } catch {}
+}
+
+/* ====== MESSAGES ====== */
+async function loadMessages() {
+  loading('msgs-wrap');
+  try {
+    const { ok, data } = await apiRequest('/contact/messages','GET',null,true);
+    if (!ok) throw new Error(data.message);
+    const rows = data.messages;
+    if (!rows.length) {
+      document.getElementById('msgs-wrap').innerHTML =
+        '<div style="text-align:center;padding:48px;color:var(--text-light);">📭 No messages yet.</div>';
+      return;
+    }
+    document.getElementById('msgs-wrap').innerHTML = `
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead>
+          <tbody>
+            ${rows.map((m,i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td><strong>${escHtml(m.name)}</strong></td>
+                <td style="font-size:13px;">${escHtml(m.email)}</td>
+                <td class="td-trunc">${escHtml(m.message)}</td>
+                <td><button class="btn-icon btn-del" onclick="confirmDel('message',${m.id})" title="Delete">🗑️</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch(e) {
+    document.getElementById('msgs-wrap').innerHTML = `<div style="text-align:center;padding:30px;color:var(--error);">⚠️ ${escHtml(e.message||'Error loading messages.')}</div>`;
+  }
+}
+
+/* ====== SERVICES ====== */
+async function loadServices() {
+  loading('svcs-wrap');
+  try {
+    const { ok, data } = await apiRequest('/services');
+    if (!ok) throw new Error(data.message);
+    const rows = data.services;
+    if (!rows.length) {
+      document.getElementById('svcs-wrap').innerHTML =
+        '<div style="text-align:center;padding:48px;color:var(--text-light);">🔧 No services. <button onclick="openSvcModal()" style="color:var(--primary);background:none;border:none;cursor:pointer;font-weight:600;">Add one →</button></div>';
+      return;
+    }
+    document.getElementById('svcs-wrap').innerHTML = `
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${rows.map((s,i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td style="font-size:22px;">${escHtml(s.image||'🔧')}</td>
+                <td><strong>${escHtml(s.title)}</strong></td>
+                <td class="td-trunc">${escHtml((s.description||'').substring(0,70))}…</td>
+                <td><div class="action-btns">
+                  <button class="btn-icon btn-edit" onclick='editSvc(${JSON.stringify(s).replace(/'/g,"&#39;")})' title="Edit">✏️</button>
+                  <button class="btn-icon btn-del" onclick="confirmDel('service',${s.id})" title="Delete">🗑️</button>
+                </div></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch(e) {
+    document.getElementById('svcs-wrap').innerHTML = `<div style="text-align:center;padding:30px;color:var(--error);">⚠️ ${escHtml(e.message||'Error.')}</div>`;
+  }
+}
+
+/* ====== PROJECTS ====== */
+async function loadProjects() {
+  loading('projs-wrap');
+  try {
+    const { ok, data } = await apiRequest('/projects');
+    if (!ok) throw new Error(data.message);
+    const rows = data.projects;
+    if (!rows.length) {
+      document.getElementById('projs-wrap').innerHTML =
+        '<div style="text-align:center;padding:48px;color:var(--text-light);">📁 No projects. <button onclick="openProjModal()" style="color:var(--primary);background:none;border:none;cursor:pointer;font-weight:600;">Add one →</button></div>';
+      return;
+    }
+    document.getElementById('projs-wrap').innerHTML = `
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>Title</th><th>Technology</th><th>Description</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${rows.map((p,i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td><strong>${escHtml(p.title)}</strong></td>
+                <td><span style="background:rgba(0,85,255,0.07);color:var(--primary);padding:3px 10px;border-radius:50px;font-size:12px;font-weight:600;">${escHtml(p.technology)}</span></td>
+                <td class="td-trunc">${escHtml((p.description||'').substring(0,70))}…</td>
+                <td><div class="action-btns">
+                  <button class="btn-icon btn-edit" onclick='editProj(${JSON.stringify(p).replace(/'/g,"&#39;")})' title="Edit">✏️</button>
+                  <button class="btn-icon btn-del" onclick="confirmDel('project',${p.id})" title="Delete">🗑️</button>
+                </div></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch(e) {
+    document.getElementById('projs-wrap').innerHTML = `<div style="text-align:center;padding:30px;color:var(--error);">⚠️ ${escHtml(e.message||'Error.')}</div>`;
+  }
+}
+
+/* ====== USERS ====== */
+async function loadUsers() {
+  loading('users-wrap');
+  try {
+    const { ok, data } = await apiRequest('/users','GET',null,true);
+    if (!ok) throw new Error(data.message);
+    const rows = data.users;
+    document.getElementById('users-wrap').innerHTML = `
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr></thead>
+          <tbody>
+            ${rows.map((u,i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td><strong>${escHtml(u.name)}</strong></td>
+                <td style="font-size:13px;">${escHtml(u.email)}</td>
+                <td><span class="badge badge-${u.role}">${u.role}</span></td>
+                <td>${u.role!=='admin' ? `<button class="btn-icon btn-del" onclick="confirmDel('user',${u.id})" title="Delete">🗑️</button>` : '<span style="color:var(--text-muted);font-size:12px;">Protected</span>'}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } catch(e) {
+    document.getElementById('users-wrap').innerHTML = `<div style="text-align:center;padding:30px;color:var(--error);">⚠️ ${escHtml(e.message||'Error.')}</div>`;
+  }
+}
+
+/* ====== SERVICE MODAL LOGIC ====== */
+function openSvcModal(svc = null) {
+  document.getElementById('svc-modal-title').textContent = svc ? 'Edit Service' : 'Add Service';
+  document.getElementById('svc-id').value     = svc?.id || '';
+  document.getElementById('svc-image').value  = svc?.image || '';
+  document.getElementById('svc-title').value  = svc?.title || '';
+  document.getElementById('svc-desc').value   = svc?.description || '';
+  const al = document.getElementById('svc-alert');
+  al.className = 'alert'; al.textContent = '';
+  setBtnLoading('svc-save-btn', false, 'Save Service');
+  openModal('svc-modal');
+}
+function editSvc(svc) { openSvcModal(svc); }
+
+async function saveService() {
+  const id   = document.getElementById('svc-id').value;
+  const img  = document.getElementById('svc-image').value.trim();
+  const title = document.getElementById('svc-title').value.trim();
+  const desc  = document.getElementById('svc-desc').value.trim();
+  if (!title || !desc) return setAlert('svc-alert','Title and description are required.','error');
+  setBtnLoading('svc-save-btn', true, 'Save Service');
+  try {
+    const endpoint = id ? `/services/${id}` : '/services';
+    const method   = id ? 'PUT' : 'POST';
+    const { ok, data } = await apiRequest(endpoint, method, { title, description: desc, image: img }, true);
+    if (!ok) throw new Error(data.message);
+    closeModal('svc-modal');
+    loadServices();
+    loadStats();
+  } catch(e) {
+    setAlert('svc-alert', e.message||'Failed to save.', 'error');
+    setBtnLoading('svc-save-btn', false, 'Save Service');
+  }
+}
+
+/* ====== PROJECT MODAL LOGIC ====== */
+function openProjModal(proj = null) {
+  document.getElementById('proj-modal-title').textContent = proj ? 'Edit Project' : 'Add Project';
+  document.getElementById('proj-id').value    = proj?.id || '';
+  document.getElementById('proj-title').value = proj?.title || '';
+  document.getElementById('proj-tech').value  = proj?.technology || '';
+  document.getElementById('proj-desc').value  = proj?.description || '';
+  const al = document.getElementById('proj-alert');
+  al.className = 'alert'; al.textContent = '';
+  setBtnLoading('proj-save-btn', false, 'Save Project');
+  openModal('proj-modal');
+}
+function editProj(proj) { openProjModal(proj); }
+
+async function saveProject() {
+  const id    = document.getElementById('proj-id').value;
+  const title = document.getElementById('proj-title').value.trim();
+  const tech  = document.getElementById('proj-tech').value.trim();
+  const desc  = document.getElementById('proj-desc').value.trim();
+  if (!title || !tech) return setAlert('proj-alert','Title and technology are required.','error');
+  setBtnLoading('proj-save-btn', true, 'Save Project');
+  try {
+    const endpoint = id ? `/projects/${id}` : '/projects';
+    const method   = id ? 'PUT' : 'POST';
+    const { ok, data } = await apiRequest(endpoint, method, { title, technology: tech, description: desc }, true);
+    if (!ok) throw new Error(data.message);
+    closeModal('proj-modal');
+    loadProjects();
+    loadStats();
+  } catch(e) {
+    setAlert('proj-alert', e.message||'Failed to save.', 'error');
+    setBtnLoading('proj-save-btn', false, 'Save Project');
+  }
+}
+
+/* ====== DELETE ====== */
+let _delTarget = null;
+function confirmDel(type, id) {
+  _delTarget = { type, id };
+  openModal('del-modal');
+}
+document.getElementById('del-confirm-btn').addEventListener('click', async () => {
+  if (!_delTarget) return;
+  closeModal('del-modal');
+  const { type, id } = _delTarget;
+  const map = { message:'/contact/messages', service:'/services', project:'/projects', user:'/users' };
+  try {
+    const { ok, data } = await apiRequest(`${map[type]}/${id}`, 'DELETE', null, true);
+    if (!ok) throw new Error(data.message);
+    const reloaders = { message: loadMessages, service: loadServices, project: loadProjects, user: loadUsers };
+    reloaders[type]?.();
+    loadStats();
+  } catch(e) {
+    alert('Delete failed: ' + e.message);
+  }
+  _delTarget = null;
+});
+
+/* ====== LOGOUT ====== */
+function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+
+/* ====== INIT ====== */
+loadStats();
+</script>
+</body>
+</html>
