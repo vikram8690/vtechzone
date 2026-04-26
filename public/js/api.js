@@ -3,7 +3,7 @@
    Used by: all public HTML pages
    ============================================= */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://vtechzone.in/api';
 
 /* ---------- token / user ---------- */
 function getToken() { return localStorage.getItem('vtechzone_token'); }
