@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -27,12 +27,12 @@
 <!-- TOPBAR -->
 <nav class="navbar scrolled" style="background:white;">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <div class="logo-icon">⚡</div>
       <span>v<span>Tech</span>Zone</span>
     </a>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a href="index.html" class="btn btn-outline btn-sm">🏠 Home</a>
+      <a href="/" class="btn btn-outline btn-sm">🏠 Home</a>
       <button onclick="doLogout()" class="btn btn-primary btn-sm">Logout</button>
     </div>
   </div>
@@ -72,8 +72,8 @@
             <span class="icon">👤</span> My Profile
           </div>
           <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-          <a href="services.html" class="sidebar-link"><span class="icon">🔧</span> Services</a>
-          <a href="contact.html" class="sidebar-link"><span class="icon">📬</span> Contact</a>
+          <a href="/services" class="sidebar-link"><span class="icon">🔧</span> Services</a>
+          <a href="/contact" class="sidebar-link"><span class="icon">📬</span> Contact</a>
           <div style="height:1px;background:var(--border);margin:12px 0;"></div>
           <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);">
             <span class="icon">🚪</span> Logout
@@ -107,9 +107,9 @@
           <div class="dash-card">
             <h2>Quick Actions</h2>
             <div class="qa-grid">
-              <a href="contact.html" class="qa-btn"><span class="qa-icon">📬</span>Send Message</a>
-              <a href="services.html" class="qa-btn"><span class="qa-icon">🔧</span>Our Services</a>
-              <a href="projects.html" class="qa-btn"><span class="qa-icon">💼</span>Projects</a>
+              <a href="/contact" class="qa-btn"><span class="qa-icon">📬</span>Send Message</a>
+              <a href="/services" class="qa-btn"><span class="qa-icon">🔧</span>Our Services</a>
+              <a href="/projects" class="qa-btn"><span class="qa-icon">💼</span>Projects</a>
               <div class="qa-btn" onclick="showTab('messages',document.getElementById('slink-messages'))">
                 <span class="qa-icon">💬</span>My Messages
               </div>
@@ -135,7 +135,7 @@
           <div class="dash-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
               <h2 style="margin:0;">My Messages</h2>
-              <a href="contact.html" class="btn btn-primary btn-sm">+ New Message</a>
+              <a href="/contact" class="btn btn-primary btn-sm">+ New Message</a>
             </div>
             <div id="allMsgsWrap">
               <div style="text-align:center;padding:40px;color:var(--text-light);">
@@ -184,8 +184,8 @@
 <script src="js/api.js"></script>
 <script>
   // Auth guard
-  if (!isLoggedIn()) { window.location.href = 'login.html'; }
-  if (isAdmin())     { window.location.href = 'admin.html'; }
+  if (!isLoggedIn()) { window.location.href = '/login'; }
+  if (isAdmin())     { window.location.href = '/admin'; }
 
   const user = getUser();
   if (user) {
@@ -213,7 +213,7 @@
   document.getElementById('tab-overview').style.display = 'flex';
   document.getElementById('tab-overview').style.flexDirection = 'column';
 
-  function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+  function doLogout() { clearAuth(); window.location.href = '/'; }
 
   async function loadMessages() {
     const wrap = document.getElementById('allMsgsWrap');
@@ -232,7 +232,7 @@
         wrap.innerHTML = `<div style="text-align:center;padding:48px 20px;color:var(--text-light);">
           <div style="font-size:48px;margin-bottom:12px;">💬</div>
           <p>No messages yet.</p>
-          <a href="contact.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Send Your First Message →</a>
+          <a href="/contact" class="btn btn-primary btn-sm" style="margin-top:16px;">Send Your First Message →</a>
         </div>`;
       }
     } catch {
@@ -256,7 +256,7 @@
           (data.messages.length > 3 ? `<div style="margin-top:12px;text-align:right;"><button onclick="showTab('messages',document.getElementById('slink-messages'))" class="btn btn-outline btn-sm">View All Messages →</button></div>` : '');
       } else {
         wrap.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-light);">
-          <p>No messages yet. <a href="contact.html" style="color:var(--primary);font-weight:600;">Send one now →</a></p>
+          <p>No messages yet. <a href="/contact" style="color:var(--primary);font-weight:600;">Send one now →</a></p>
         </div>`;
       }
     } catch {

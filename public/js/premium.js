@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    vTechZone — Premium JS
    Features: Swiper slider, AOS, dark mode, back-to-top,
              toast notifications, scroll animations
@@ -220,8 +220,8 @@ function initUserMenu() {
   document.querySelectorAll('.nav-user-menu').forEach(el => {
     el.addEventListener('click', () => {
       const user = typeof getUser === 'function' ? getUser() : null;
-      if (user && user.role === 'admin') window.location.href = 'admin.html';
-      else window.location.href = 'dashboard.html';
+      if (user && user.role === 'admin') window.location.href = '/admin';
+      else window.location.href = '/dashboard';
     });
   });
 }

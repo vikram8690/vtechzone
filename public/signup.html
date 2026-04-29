@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -9,8 +9,8 @@
 </head>
 <body>
 <nav class="navbar scrolled"><div class="nav-inner">
-  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div><span>v<span>Tech</span>Zone</span></a>
-  <div style="font-size:14px;color:var(--text-light)">Already have an account? <a href="login.html" style="color:var(--primary);font-weight:600">Sign In</a></div>
+  <a href="/" class="nav-logo"><div class="logo-icon">⚡</div><span>v<span>Tech</span>Zone</span></a>
+  <div style="font-size:14px;color:var(--text-light)">Already have an account? <a href="/login" style="color:var(--primary);font-weight:600">Sign In</a></div>
 </div></nav>
 
 <div class="auth-page">
@@ -52,13 +52,13 @@
         Create Account →
       </button>
     </form>
-    <div class="auth-footer">Already have an account? <a href="login.html">Sign In</a></div>
+    <div class="auth-footer">Already have an account? <a href="/login">Sign In</a></div>
   </div>
 </div>
 
 <script src="js/api.js"></script>
 <script>
-if (isLoggedIn()) window.location.href = 'dashboard.html';
+if (isLoggedIn()) window.location.href = '/dashboard';
 
 document.getElementById('togglePwd').addEventListener('click', function() {
   const pwd = document.getElementById('password');
@@ -95,7 +95,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     const { ok, data } = await apiRequest('/auth/signup', 'POST', { name, email, password });
     if (ok) {
       document.getElementById('successAlert').classList.add('show');
-      setTimeout(() => window.location.href = 'login.html', 2000);
+      setTimeout(() => window.location.href = '/login', 2000);
     } else {
       document.getElementById('errorAlert').textContent = '❌ ' + (data.message || 'Signup failed.');
       document.getElementById('errorAlert').classList.add('show');

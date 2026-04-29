@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -34,13 +34,13 @@
 <!-- TOPBAR -->
 <nav class="navbar scrolled" style="background:white;">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <div class="logo-icon">⚡</div>
       <span>v<span>Tech</span>Zone</span>
       <span style="font-size:12px;background:var(--primary);color:white;padding:3px 10px;border-radius:50px;margin-left:6px;font-family:var(--font-body);">ADMIN</span>
     </a>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a href="index.html" class="btn btn-outline btn-sm">🌐 Website</a>
+      <a href="/" class="btn btn-outline btn-sm">🌐 Website</a>
       <button onclick="doLogout()" class="btn btn-primary btn-sm">Logout</button>
     </div>
   </div>
@@ -76,7 +76,7 @@
           <div class="sidebar-link" id="alink-projects" onclick="showPanel('projects',this)"><span class="icon">📁</span> Projects</div>
           <div class="sidebar-link" id="alink-users" onclick="showPanel('users',this)"><span class="icon">👥</span> Users</div>
           <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-          <a href="index.html" class="sidebar-link"><span class="icon">🌐</span> View Website</a>
+          <a href="/" class="sidebar-link"><span class="icon">🌐</span> View Website</a>
           <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);"><span class="icon">🚪</span> Logout</div>
         </nav>
       </aside>
@@ -236,7 +236,7 @@
 <script src="js/api.js"></script>
 <script>
 /* ====== AUTH GUARD ====== */
-if (!isLoggedIn() || !isAdmin()) { window.location.href = 'login.html'; }
+if (!isLoggedIn() || !isAdmin()) { window.location.href = '/login'; }
 
 const user = getUser();
 if (user) {
@@ -524,7 +524,7 @@ document.getElementById('del-confirm-btn').addEventListener('click', async () =>
 });
 
 /* ====== LOGOUT ====== */
-function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+function doLogout() { clearAuth(); window.location.href = '/'; }
 
 /* ====== INIT ====== */
 loadStats();

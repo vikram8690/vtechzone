@@ -1,4 +1,4 @@
-/* =============================================
+﻿/* =============================================
    vTechZone - Main JavaScript
    ============================================= */
 
@@ -98,7 +98,7 @@ function updateNavAuth() {
 
 function logout() {
   Auth.clear();
-  window.location.href = 'index.html';
+  window.location.href = '/';
 }
 
 // ====== ALERT HELPER ======
