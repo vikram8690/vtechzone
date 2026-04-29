@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>vTechZone – Your Complete Tech Solution</title>
-<meta name="description" content="vTechZone offers laptop repair, computer hardware, software development and student project services."/>
+<meta name="description" content="vTechZone offers laptop repair, computer hardware, software development and student project services in Jaunpur, UP."/>
 <link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"/>
 </head>
 <body>
@@ -24,13 +25,14 @@
       <span>v<span>Tech</span>Zone</span>
     </a>
     <div class="nav-menu">
-      <a href="index.html" class="nav-link active">Home</a>
+      <a href="index.html"    class="nav-link active">Home</a>
       <a href="services.html" class="nav-link">Services</a>
       <a href="projects.html" class="nav-link">Projects</a>
-      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="contact.html"  class="nav-link">Contact</a>
     </div>
     <div class="nav-actions">
-      <a href="login.html" class="btn btn-outline btn-sm nav-login">Login</a>
+      <button class="dark-toggle" title="Toggle dark mode">🌙</button>
+      <a href="login.html"  class="btn btn-outline btn-sm nav-login">Login</a>
       <a href="signup.html" class="btn btn-primary btn-sm nav-signup">Sign Up</a>
       <div class="nav-user nav-user-menu" style="display:none">
         <span>👤</span>
@@ -47,105 +49,155 @@
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <span class="mobile-close" id="mobileClose">✕</span>
-  <a href="index.html" class="nav-link active">🏠 Home</a>
+  <a href="index.html"    class="nav-link active">🏠 Home</a>
   <a href="services.html" class="nav-link">🔧 Services</a>
   <a href="projects.html" class="nav-link">💼 Projects</a>
-  <a href="contact.html" class="nav-link">📬 Contact</a>
-  <a href="login.html" class="btn btn-outline nav-login" style="margin-top:16px">Login</a>
+  <a href="contact.html"  class="nav-link">📬 Contact</a>
+  <a href="login.html"  class="btn btn-outline nav-login"  style="margin-top:16px">Login</a>
   <a href="signup.html" class="btn btn-primary nav-signup">Sign Up</a>
 </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid"></div>
+<!-- ===== HERO SLIDER ===== -->
+<section class="hero-section">
+  <div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
 
-  <!-- Animated background blobs -->
-  <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(0,212,255,0.07);top:-100px;right:-100px;pointer-events:none;"></div>
-  <div style="position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(0,85,255,0.1);bottom:-80px;left:-80px;pointer-events:none;"></div>
-
-  <div class="hero-content">
-    <div class="hero-text">
-
-      <h1 class="hero-title">
-        Welcome to <span class="highlight">vTechZone</span><br/>
-        Your Complete<br/>Tech Solution
-      </h1>
-      <p class="hero-subtitle">
-        Laptop repairs, hardware upgrades, custom software &amp; student projects — all under one roof. Fast service. Honest pricing. Expert team.
-      </p>
-
-      <!-- Service pills -->
-      <div class="hero-pills">
-        <span class="hero-pill">🔧 Laptop Repair</span>
-        <span class="hero-pill">🖥️ Computer Hardware</span>
-        <span class="hero-pill">⚙️ Software Dev</span>
-        <span class="hero-pill">🎓 Student Projects</span>
-      </div>
-
-      <!-- CTA buttons -->
-      <div class="hero-actions">
-        <a href="services.html" class="btn btn-white btn-lg">Explore Services →</a>
-        <a href="contact.html" class="btn btn-lg" style="color:white;border:2px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);">📞 Contact Now</a>
-      </div>
-
-      <!-- Quick contact strip -->
-      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);animation:fadeInUp 0.6s 0.5s ease both;">
-        <a href="tel:+918604614912" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:13px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
-          📞 +91 86046 14912
-        </a>
-        <a href="mailto:techzone.it.2025@gmail.com" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:13px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
-          ✉️ techzone.it.2025@gmail.com
-        </a>
-      </div>
-    </div>
-
-    <!-- Right side visual card -->
-    <div class="hero-visual">
-      <div class="hero-card-wrap">
-
-        <!-- Main stat card -->
-        <div class="hero-stat-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-            <div>
-              <div class="stat-number" id="heroCounter">0</div>
-              <div class="stat-label">Happy Customers Served</div>
+      <!-- SLIDE 1 — Complete Tech Solutions -->
+      <div class="swiper-slide hero-slide slide-1">
+        <div class="slide-bg"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-shape slide-shape-1"></div>
+        <div class="slide-shape slide-shape-2"></div>
+        <div class="slide-content">
+          <div class="slide-badge">⚡ Trusted by 500+ Customers in Jaunpur</div>
+          <h1 class="slide-title">Complete Tech<br/><span>Solutions</span></h1>
+          <p class="slide-subtitle">Your one-stop technology center for repairs, hardware, software development and student projects — all under one roof.</p>
+          <div class="slide-actions">
+            <a href="services.html" class="btn btn-white btn-lg">Explore Services →</a>
+            <a href="contact.html"  class="btn btn-glass  btn-lg">Get Free Quote</a>
+          </div>
+          <div class="slide-metrics">
+            <div class="slide-metric">
+              <div class="slide-metric-num">500+</div>
+              <div class="slide-metric-lbl">Happy<br/>Customers</div>
             </div>
-            <div style="width:48px;height:48px;background:rgba(0,212,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏆</div>
-          </div>
-          <div style="margin-top:16px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;">
-            <div style="height:4px;width:82%;background:linear-gradient(90deg,var(--accent),var(--primary-light));border-radius:2px;"></div>
-          </div>
-          <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.5);">82% repeat customers</div>
-          <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
-            <span style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.3);padding:5px 12px;border-radius:50px;font-size:12px;color:rgba(255,255,255,0.85);">✅ 5-Star Rated</span>
-            <span style="background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.25);padding:5px 12px;border-radius:50px;font-size:12px;color:rgba(255,255,255,0.85);">⚡ Same Day Service</span>
+            <div class="slide-metric">
+              <div class="slide-metric-num">5+</div>
+              <div class="slide-metric-lbl">Years<br/>Experience</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">4.9★</div>
+              <div class="slide-metric-lbl">Customer<br/>Rating</div>
+            </div>
           </div>
         </div>
-
-        <!-- 4 service tiles -->
-        <div class="hero-floating">
-          <a href="services.html" class="floating-item">
-            <div class="icon">🔧</div>
-            <div class="label">Laptop Repair</div>
-          </a>
-          <a href="services.html" class="floating-item">
-            <div class="icon">🖥️</div>
-            <div class="label">Hardware</div>
-          </a>
-          <a href="services.html" class="floating-item">
-            <div class="icon">⚙️</div>
-            <div class="label">Software Dev</div>
-          </a>
-          <a href="services.html" class="floating-item">
-            <div class="icon">🎓</div>
-            <div class="label">Projects</div>
-          </a>
-        </div>
-
       </div>
-    </div>
-  </div>
 
+      <!-- SLIDE 2 — Laptop Repair -->
+      <div class="swiper-slide hero-slide slide-2">
+        <div class="slide-bg"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-shape slide-shape-1"></div>
+        <div class="slide-shape slide-shape-2"></div>
+        <div class="slide-content">
+          <div class="slide-badge">🔧 Same-Day Service · 30-Day Warranty</div>
+          <h1 class="slide-title">Laptop Repair<br/><span>Experts</span></h1>
+          <p class="slide-subtitle">Fast, affordable laptop repairs by certified technicians. Dell, HP, Lenovo, Asus, Apple MacBook — all brands covered.</p>
+          <div class="slide-actions">
+            <a href="contact.html"       class="btn btn-white btn-lg">Book Repair →</a>
+            <a href="tel:+918604614912" class="btn btn-glass  btn-lg">📞 Call Now</a>
+          </div>
+          <div class="slide-metrics">
+            <div class="slide-metric">
+              <div class="slide-metric-num">24h</div>
+              <div class="slide-metric-lbl">Avg.<br/>Turnaround</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">30d</div>
+              <div class="slide-metric-lbl">Service<br/>Warranty</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">All</div>
+              <div class="slide-metric-lbl">Brands<br/>Covered</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — Software Development -->
+      <div class="swiper-slide hero-slide slide-3">
+        <div class="slide-bg"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-shape slide-shape-1"></div>
+        <div class="slide-shape slide-shape-2"></div>
+        <div class="slide-content">
+          <div class="slide-badge">⚙️ Web · Mobile · Desktop · APIs</div>
+          <h1 class="slide-title">Build Your Software<br/><span>With Us</span></h1>
+          <p class="slide-subtitle">Custom digital solutions for your business — from simple websites to complex enterprise applications built with modern tech stacks.</p>
+          <div class="slide-actions">
+            <a href="projects.html" class="btn btn-white btn-lg">View Projects →</a>
+            <a href="contact.html"  class="btn btn-glass  btn-lg">Get a Quote</a>
+          </div>
+          <div class="slide-metrics">
+            <div class="slide-metric">
+              <div class="slide-metric-num">50+</div>
+              <div class="slide-metric-lbl">Projects<br/>Delivered</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">100%</div>
+              <div class="slide-metric-lbl">Client<br/>Satisfaction</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">Clean</div>
+              <div class="slide-metric-lbl">Modern<br/>Code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Student Projects -->
+      <div class="swiper-slide hero-slide slide-4">
+        <div class="slide-bg"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-shape slide-shape-1"></div>
+        <div class="slide-shape slide-shape-2"></div>
+        <div class="slide-content">
+          <div class="slide-badge">🎓 BCA · MCA · B.Tech · BE</div>
+          <h1 class="slide-title">Student Projects<br/><span>Support</span></h1>
+          <p class="slide-subtitle">Complete academic project assistance — from ideation to development, documentation, and presentation. Get top grades guaranteed!</p>
+          <div class="slide-actions">
+            <a href="contact.html"  class="btn btn-white btn-lg">Start Project →</a>
+            <a href="services.html" class="btn btn-glass  btn-lg">Learn More</a>
+          </div>
+          <div class="slide-metrics">
+            <div class="slide-metric">
+              <div class="slide-metric-num">A+</div>
+              <div class="slide-metric-lbl">Grade<br/>Target</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">Full</div>
+              <div class="slide-metric-lbl">Docs &amp;<br/>Support</div>
+            </div>
+            <div class="slide-metric">
+              <div class="slide-metric-num">Viva</div>
+              <div class="slide-metric-lbl">Prep<br/>Included</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /swiper-wrapper -->
+
+    <!-- Controls -->
+    <div class="swiper-button-prev hero-prev"></div>
+    <div class="swiper-button-next hero-next"></div>
+    <div class="swiper-pagination hero-pagination"></div>
+  </div><!-- /hero-swiper -->
+
+  <!-- Progress bar -->
+  <div class="hero-progress"></div>
+
+  <!-- Scroll indicator -->
   <div class="hero-scroll">
     <div class="scroll-dot"></div>
     <span>Scroll Down</span>
@@ -157,30 +209,24 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-visual fade-in">
-        <!-- Owner Photo Card -->
         <div style="background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);border:1px solid var(--border);overflow:hidden;">
-          <!-- Photo -->
           <div style="position:relative;">
             <img src="images/vikram.jpg" alt="Vikram – Founder vTechZone"
               style="width:100%;height:380px;object-fit:cover;object-position:center 20%;display:block;"/>
-            <!-- Gradient overlay at bottom -->
             <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to top,rgba(10,15,30,0.85),transparent);"></div>
-            <!-- Name on photo -->
             <div style="position:absolute;bottom:18px;left:20px;right:20px;">
               <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:white;letter-spacing:0.5px;">Vikram</div>
-              <div style="font-size:13px;color:var(--accent);font-weight:600;margin-top:2px;">Founder &amp; Owner, vTechZone</div>
+              <div style="font-size:13px;color:#c4b5fd;font-weight:600;margin-top:2px;">Founder &amp; Owner, vTechZone</div>
             </div>
-            <!-- Verified badge -->
-            <div style="position:absolute;top:16px;right:16px;background:var(--primary);color:white;padding:5px 12px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px;">✓ OWNER</div>
+            <div style="position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:5px 12px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.5px;">✓ OWNER</div>
           </div>
-          <!-- Stats below photo -->
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">
             <div style="padding:16px 12px;text-align:center;border-right:1px solid var(--border);">
-              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--primary);">500+</div>
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--primary);" data-count="500" data-suffix="+">500+</div>
               <div style="font-size:11px;color:var(--text-light);font-weight:500;margin-top:2px;">Clients</div>
             </div>
             <div style="padding:16px 12px;text-align:center;border-right:1px solid var(--border);">
-              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--primary);">5+</div>
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--primary);" data-count="5" data-suffix="+">5+</div>
               <div style="font-size:11px;color:var(--text-light);font-weight:500;margin-top:2px;">Years Exp</div>
             </div>
             <div style="padding:16px 12px;text-align:center;">
@@ -192,7 +238,7 @@
       </div>
       <div class="about-text fade-in fade-in-1">
         <div class="section-tag">🏢 About vTechZone</div>
-        <h2 class="section-title">Meet the Founder —<br/><span style="color:var(--primary);">Vikram</span></h2>
+        <h2 class="section-title">Meet the Founder —<br/><span style="background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Vikram</span></h2>
         <p style="color:var(--text-light);font-size:16px;line-height:1.8;margin-bottom:24px;">
           Hi, I'm <strong style="color:var(--text);">Vikram</strong> — founder and owner of vTechZone. With 5+ years of hands-on experience in hardware repair and software development, I started vTechZone to provide honest, affordable, and expert tech support to students and businesses in Jaunpur.
         </p>
@@ -220,7 +266,7 @@
           </div>
         </div>
         <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="contact.html" class="btn btn-primary">Get in Touch →</a>
+          <a href="contact.html"       class="btn btn-primary">Get in Touch →</a>
           <a href="tel:+918604614912" class="btn btn-outline">📞 Call Vikram</a>
         </div>
       </div>
@@ -229,12 +275,12 @@
 </section>
 
 <!-- SERVICES OVERVIEW -->
-<section class="section-pad">
+<section class="section-pad" style="background:var(--white);">
   <div class="container text-center">
     <div class="section-tag">🔧 What We Offer</div>
     <h2 class="section-title">Our Services</h2>
     <p class="section-subtitle">Comprehensive tech services tailored to your needs — all under one roof.</p>
-    <div class="services-grid" id="homeServices">
+    <div class="services-grid">
       <div class="service-card fade-in">
         <div class="service-emoji">🔧</div>
         <h3>Laptop Repair</h3>
@@ -285,10 +331,10 @@
 
 <!-- WHY CHOOSE US -->
 <section class="why-section section-pad">
-  <div class="container text-center">
-    <div class="section-tag" style="background:rgba(0,212,255,0.15);color:var(--accent)">✨ Why Us</div>
-    <h2 class="section-title" style="color:white">Why Choose vTechZone?</h2>
-    <p class="section-subtitle" style="color:rgba(255,255,255,0.6)">We don't just fix tech — we build lasting relationships through trust, quality, and reliability.</p>
+  <div class="container text-center" style="position:relative;">
+    <div class="section-tag" style="background:rgba(167,139,250,0.15);color:#c4b5fd;border-color:rgba(167,139,250,0.25);">✨ Why Us</div>
+    <h2 class="section-title" style="color:white;">Why Choose vTechZone?</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,0.55);">We don't just fix tech — we build lasting relationships through trust, quality, and reliability.</p>
     <div class="why-grid">
       <div class="why-card">
         <span class="why-icon">⚡</span>
@@ -368,55 +414,26 @@
   </div>
 </section>
 
-<!-- ===== FOUNDED BY VIKRAM SECTION ===== -->
+<!-- FOUNDED BY VIKRAM -->
 <section style="background:var(--light);padding:80px 0;">
   <div class="container">
-    <div style="background:linear-gradient(135deg,var(--dark) 0%,#0D1B3E 60%,#0055FF 100%);border-radius:24px;overflow:hidden;position:relative;">
-
-      <!-- Background grid pattern -->
+    <div style="background:linear-gradient(135deg,var(--dark) 0%,#0D1B3E 60%,var(--primary) 100%);border-radius:24px;overflow:hidden;position:relative;">
       <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
-
-      <!-- Glow blobs -->
-      <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(0,85,255,0.2);top:-80px;right:100px;pointer-events:none;filter:blur(60px);"></div>
-      <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(0,212,255,0.15);bottom:-40px;left:200px;pointer-events:none;filter:blur(50px);"></div>
-
-      <div style="position:relative;display:grid;grid-template-columns:auto 1fr;gap:0;align-items:stretch;">
-
-        <!-- LEFT — Photo column -->
-        <div style="width:280px;position:relative;flex-shrink:0;">
+      <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(124,58,237,0.2);top:-80px;right:100px;pointer-events:none;filter:blur(60px);"></div>
+      <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(37,99,235,0.15);bottom:-40px;left:200px;pointer-events:none;filter:blur(50px);"></div>
+      <div style="position:relative;display:grid;grid-template-columns:auto 1fr;gap:0;align-items:stretch;" class="founder-card-grid">
+        <div style="width:280px;position:relative;flex-shrink:0;" class="founder-photo-col">
           <img src="images/vikram.jpg" alt="Vikram – Founder vTechZone"
             style="width:280px;height:100%;min-height:400px;object-fit:cover;object-position:center 20%;display:block;"/>
-          <!-- Dark overlay on photo -->
           <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(10,15,30,0.7));pointer-events:none;"></div>
-          <!-- Owner badge on photo -->
-          <div style="position:absolute;top:20px;left:16px;background:var(--primary);color:white;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;">✦ FOUNDER</div>
+          <div style="position:absolute;top:20px;left:16px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;">✦ FOUNDER</div>
         </div>
-
-        <!-- RIGHT — Text column -->
         <div style="padding:48px 48px 48px 40px;">
-
-          <!-- Top label -->
-          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.25);color:var(--accent);padding:6px 16px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:20px;text-transform:uppercase;">
-            ✦ Founded By
-          </div>
-
-          <!-- Name — BIG and highlighted -->
-          <h2 style="font-family:var(--font-display);font-size:clamp(40px,5vw,72px);font-weight:800;color:white;line-height:1;margin-bottom:8px;letter-spacing:-1px;">
-            Vikram
-          </h2>
-          <div style="font-size:16px;color:var(--accent);font-weight:600;margin-bottom:24px;letter-spacing:0.5px;">
-            Founder &amp; Owner — vTechZone
-          </div>
-
-          <!-- Divider line -->
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.25);color:#c4b5fd;padding:6px 16px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:20px;text-transform:uppercase;">✦ Founded By</div>
+          <h2 style="font-family:var(--font-display);font-size:clamp(40px,5vw,72px);font-weight:800;color:white;line-height:1;margin-bottom:8px;letter-spacing:-1px;">Vikram</h2>
+          <div style="font-size:16px;color:#a78bfa;font-weight:600;margin-bottom:24px;letter-spacing:0.5px;">Founder &amp; Owner — vTechZone</div>
           <div style="width:60px;height:3px;background:linear-gradient(90deg,var(--accent),var(--primary));border-radius:2px;margin-bottom:24px;"></div>
-
-          <!-- Quote / intro -->
-          <p style="color:rgba(255,255,255,0.75);font-size:16px;line-height:1.8;max-width:480px;margin-bottom:32px;">
-            "I started vTechZone with a simple mission — to give every student and business owner in Jaunpur access to fast, honest, and expert tech support. Every device we repair, every project we build, carries my personal commitment to quality."
-          </p>
-
-          <!-- Highlights row -->
+          <p style="color:rgba(255,255,255,0.75);font-size:16px;line-height:1.8;max-width:480px;margin-bottom:32px;">"I started vTechZone with a simple mission — to give every student and business owner in Jaunpur access to fast, honest, and expert tech support. Every device we repair, every project we build, carries my personal commitment to quality."</p>
           <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;">
             <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:10px 18px;border-radius:10px;text-align:center;">
               <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:white;">500+</div>
@@ -435,13 +452,10 @@
               <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;font-weight:500;">Satisfaction</div>
             </div>
           </div>
-
-          <!-- CTA buttons -->
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="contact.html" class="btn btn-lg" style="background:white;color:var(--primary);font-family:var(--font-display);">Talk to Vikram →</a>
+            <a href="contact.html"       class="btn btn-lg" style="background:white;color:var(--primary);font-family:var(--font-display);">Talk to Vikram →</a>
             <a href="tel:+918604614912" class="btn btn-lg" style="background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.2);">📞 +91 86046 14912</a>
           </div>
-
         </div>
       </div>
     </div>
@@ -449,13 +463,14 @@
 </section>
 
 <!-- CTA SECTION -->
-<section style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:80px 0;">
-  <div class="container text-center">
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,4vw,42px);font-weight:800;color:white;margin-bottom:16px">Ready to Get Your Tech Fixed?</h2>
-    <p style="color:rgba(255,255,255,0.8);font-size:18px;margin-bottom:36px">Contact us today and get a free quote within minutes.</p>
+<section class="cta-section">
+  <div class="container text-center" style="position:relative;">
+    <div class="section-tag" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.25);margin-bottom:20px;">🚀 Get Started Today</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(28px,4vw,46px);font-weight:800;color:white;margin-bottom:16px;">Ready to Get Your Tech Fixed?</h2>
+    <p style="color:rgba(255,255,255,0.78);font-size:18px;margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto;">Contact us today and get a free quote within minutes. Fast, honest, expert service — guaranteed.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="contact.html" class="btn btn-white btn-lg">Contact Now →</a>
-      <a href="services.html" class="btn btn-lg" style="color:white;border:2px solid rgba(255,255,255,0.4);background:transparent">View Services</a>
+      <a href="contact.html"  class="btn btn-white btn-lg">Contact Now →</a>
+      <a href="services.html" class="btn btn-glass btn-lg">View Services</a>
     </div>
   </div>
 </section>
@@ -463,24 +478,22 @@
 <!-- FOOTER -->
 <footer class="footer">
   <div class="container">
-    <!-- Founder strip inside footer top -->
-    <div style="display:flex;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:40px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:40px;flex-wrap:wrap;">
       <img src="images/vikram.jpg" alt="Vikram"
-        style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center 30%;border:2px solid var(--accent);flex-shrink:0;"/>
+        style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center 30%;border:2px solid #7c3aed;flex-shrink:0;"/>
       <div>
         <div style="font-family:var(--font-display);font-size:15px;font-weight:700;color:white;">Vikram</div>
-        <div style="font-size:12px;color:var(--accent);font-weight:500;">Founder &amp; Owner, vTechZone</div>
+        <div style="font-size:12px;color:#a78bfa;font-weight:500;">Founder &amp; Owner, vTechZone</div>
       </div>
-      <div style="margin-left:auto;font-size:13px;color:rgba(255,255,255,0.45);">
+      <div style="margin-left:auto;font-size:13px;color:rgba(255,255,255,0.4);">
         📍 Near VBSPU, Shahganj Road, Jaunpur UP &nbsp;·&nbsp; Mon–Sat 9AM–8PM
       </div>
     </div>
-
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="nav-logo" style="color:white;">
           <div class="logo-icon">⚡</div>
-          <span>v<span style="color:var(--accent)">Tech</span>Zone</span>
+          <span>v<span style="color:#a78bfa;">Tech</span>Zone</span>
         </a>
         <p>Your one-stop technology solution center in Jaunpur, UP. Expert repairs, development, and IT services at affordable prices.</p>
         <div class="footer-social">
@@ -521,58 +534,30 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 <a href="index.html">vTechZone</a>. All rights reserved. Founded by <strong style="color:var(--accent);">Vikram</strong></span>
+      <span>© 2025 <a href="index.html">vTechZone</a>. All rights reserved. Founded by <strong style="color:#a78bfa;">Vikram</strong></span>
       <span>Crafted with ❤️ in Jaunpur, India</span>
     </div>
   </div>
 </footer>
 
-<script src="js/api.js"></script>
-<script>
-  // Loading
-  window.addEventListener('load', () => {
-    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 600);
-    // Animate counter 0 → 500
-    let count = 0;
-    const target = 500;
-    const el = document.getElementById('heroCounter');
-    if (el) {
-      const timer = setInterval(() => {
-        count += 10;
-        if (count >= target) { count = target; clearInterval(timer); }
-        el.textContent = count + '+';
-      }, 20);
-    }
-  });
-
-  // Navbar scroll
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-  });
-
-  // Mobile menu
-  document.getElementById('hamburger').addEventListener('click', () => {
-    document.getElementById('mobileMenu').classList.add('open');
-  });
-  document.getElementById('mobileClose').addEventListener('click', () => {
-    document.getElementById('mobileMenu').classList.remove('open');
-  });
-
-  // Nav user click
-  document.querySelectorAll('.nav-user-menu').forEach(el => {
-    el.addEventListener('click', () => {
-      const user = getUser();
-      if (user && user.role === 'admin') window.location.href = 'admin.html';
-      else window.location.href = 'dashboard.html';
-    });
-  });
-
-  updateNavAuth();
-</script>
-<!-- Floating WhatsApp Button -->
+<!-- Floating WhatsApp -->
 <a href="https://wa.me/918604614912" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
   💬
   <span class="wa-tooltip">Chat on WhatsApp</span>
 </a>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/premium.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    // legacy loader fallback
+    setTimeout(() => {
+      const l = document.getElementById('loader');
+      if (l) l.classList.add('hidden');
+    }, 700);
+  });
+  updateNavAuth();
+</script>
 </body>
 </html>
