@@ -76,6 +76,7 @@
           <div class="sidebar-link" id="alink-projects" onclick="showPanel('projects',this)"><span class="icon">📁</span> Projects</div>
           <div class="sidebar-link" id="alink-users" onclick="showPanel('users',this)"><span class="icon">👥</span> Users</div>
           <div class="sidebar-link" id="alink-photos" onclick="showPanel('photos',this)"><span class="icon">📷</span> Photos</div>
+          <div class="sidebar-link" id="alink-analytics" onclick="showPanel('analytics',this)"><span class="icon">📈</span> Analytics</div>
           <div style="height:1px;background:var(--border);margin:12px 0;"></div>
           <a href="/" class="sidebar-link"><span class="icon">🌐</span> View Website</a>
           <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);"><span class="icon">🚪</span> Logout</div>
@@ -92,6 +93,7 @@
             <div class="admin-stat"><div class="as-icon">🔧</div><div class="as-num" id="os-svcs">—</div><div class="as-lbl">Services</div></div>
             <div class="admin-stat"><div class="as-icon">📁</div><div class="as-num" id="os-projs">—</div><div class="as-lbl">Projects</div></div>
             <div class="admin-stat"><div class="as-icon">👥</div><div class="as-num" id="os-users">—</div><div class="as-lbl">Users</div></div>
+            <div class="admin-stat" style="cursor:pointer;" onclick="showPanel('analytics',document.getElementById('alink-analytics'))"><div class="as-icon">👁️</div><div class="as-num" id="os-visitors">—</div><div class="as-lbl">Today's Visitors</div></div>
           </div>
           <div class="dash-card">
             <h2>Quick Actions</h2>
@@ -102,6 +104,7 @@
               <div class="qa-btn" onclick="showPanel('users',document.getElementById('alink-users'))"><span class="qa-icon">👥</span>Manage Users</div>
               <div class="qa-btn" onclick="showPanel('services',document.getElementById('alink-services'))"><span class="qa-icon">🔧</span>Services</div>
               <div class="qa-btn" onclick="showPanel('projects',document.getElementById('alink-projects'))"><span class="qa-icon">📁</span>Projects</div>
+              <div class="qa-btn" onclick="showPanel('analytics',document.getElementById('alink-analytics'))"><span class="qa-icon">📈</span>Analytics</div>
             </div>
           </div>
         </div>
@@ -155,6 +158,22 @@
             <div id="users-wrap">
               <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
             </div>
+          </div>
+        </div>
+
+        <!-- ====== ANALYTICS ====== -->
+        <div id="panel-analytics" style="display:none;">
+          <div class="dash-card" style="margin-bottom:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+              <div>
+                <h2 style="margin:0;">Visitor Analytics</h2>
+                <p style="font-size:13px;color:var(--text-light);margin-top:4px;">Real-time website visitor tracking</p>
+              </div>
+              <button onclick="loadAnalytics()" class="btn btn-outline btn-sm">🔄 Refresh</button>
+            </div>
+          </div>
+          <div id="analytics-wrap">
+            <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading analytics…</div>
           </div>
         </div>
 
@@ -286,12 +305,12 @@ function loading(wrapId) {
 }
 
 /* ====== PANEL SWITCHING ====== */
-const PANELS = ['overview','messages','services','projects','users','photos'];
+const PANELS = ['overview','messages','services','projects','users','photos','analytics'];
 function showPanel(name, clickedEl) {
   PANELS.forEach(p => { document.getElementById('panel-'+p).style.display = p===name ? 'block' : 'none'; });
   document.querySelectorAll('.sidebar-nav .sidebar-link').forEach(l => l.classList.remove('active'));
   if (clickedEl) clickedEl.classList.add('active');
-  const loaders = { messages: loadMessages, services: loadServices, projects: loadProjects, users: loadUsers, photos: loadAdminPhotos };
+  const loaders = { messages: loadMessages, services: loadServices, projects: loadProjects, users: loadUsers, photos: loadAdminPhotos, analytics: loadAnalytics };
   if (loaders[name]) loaders[name]();
 }
 
@@ -363,18 +382,91 @@ async function adminUpload(index, slot) {
 /* ====== OVERVIEW STATS ====== */
 async function loadStats() {
   try {
-    const [msgs, svcs, projs, users] = await Promise.allSettled([
+    const [msgs, svcs, projs, users, vis] = await Promise.allSettled([
       apiRequest('/contact/messages','GET',null,true),
       apiRequest('/services'),
       apiRequest('/projects'),
-      apiRequest('/users','GET',null,true)
+      apiRequest('/users','GET',null,true),
+      apiRequest('/analytics/stats','GET',null,true)
     ]);
     const count = (r, key) => r.status==='fulfilled' && r.value.ok ? (r.value.data[key]||[]).length : '—';
-    document.getElementById('os-msgs').textContent  = count(msgs,  'messages');
-    document.getElementById('os-svcs').textContent  = count(svcs,  'services');
-    document.getElementById('os-projs').textContent = count(projs, 'projects');
-    document.getElementById('os-users').textContent = count(users, 'users');
+    document.getElementById('os-msgs').textContent     = count(msgs,  'messages');
+    document.getElementById('os-svcs').textContent     = count(svcs,  'services');
+    document.getElementById('os-projs').textContent    = count(projs, 'projects');
+    document.getElementById('os-users').textContent    = count(users, 'users');
+    document.getElementById('os-visitors').textContent =
+      vis.status==='fulfilled' && vis.value.ok ? (vis.value.data.stats?.today ?? '—') : '—';
   } catch {}
+}
+
+/* ====== ANALYTICS ====== */
+async function loadAnalytics() {
+  const wrap = document.getElementById('analytics-wrap');
+  wrap.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading analytics…</div>';
+  try {
+    const { ok, data } = await apiRequest('/analytics/stats', 'GET', null, true);
+    if (!ok) throw new Error(data.message || 'Failed');
+
+    const { stats, last7Days, topPages } = data;
+    const maxCount = Math.max(...last7Days.map(d => d.count), 1);
+
+    const bars = last7Days.map(day => {
+      const px = maxCount > 0 ? Math.max(Math.round((day.count / maxCount) * 100), day.count > 0 ? 4 : 0) : 0;
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <span style="font-size:11px;font-weight:700;color:var(--primary);height:16px;line-height:16px;">${day.count > 0 ? day.count : ''}</span>
+        <div style="width:100%;background:linear-gradient(to top,var(--primary),#60a5fa);border-radius:3px 3px 0 0;height:${px}px;min-height:${day.count > 0 ? '4px' : '0'};transition:height .4s;"></div>
+      </div>`;
+    }).join('');
+
+    const labels = last7Days.map(day =>
+      `<div style="flex:1;text-align:center;font-size:10px;color:var(--text-light);line-height:1.3;">${day.label}</div>`
+    ).join('');
+
+    const topPagesHtml = topPages.length === 0
+      ? '<div style="text-align:center;padding:30px;color:var(--text-light);">No data yet — visits will appear here once users browse the site.</div>'
+      : `<div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>#</th><th>Page</th><th>Visits</th><th>Share</th></tr></thead>
+          <tbody>
+            ${topPages.map((p, i) => {
+              const share = stats.total > 0 ? Math.round((p.count / stats.total) * 100) : 0;
+              return `<tr>
+                <td>${i + 1}</td>
+                <td><span style="font-family:monospace;font-size:13px;background:var(--light);padding:2px 8px;border-radius:4px;">${escHtml(p.page)}</span></td>
+                <td><strong>${p.count}</strong></td>
+                <td><div style="display:flex;align-items:center;gap:8px;">
+                  <div style="flex:1;height:6px;background:var(--border);border-radius:3px;">
+                    <div style="height:6px;border-radius:3px;background:var(--primary);width:${share}%;"></div>
+                  </div>
+                  <span style="font-size:12px;color:var(--text-light);min-width:34px;">${share}%</span>
+                </div></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table></div>`;
+
+    wrap.innerHTML = `
+      <div class="admin-stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:20px;">
+        <div class="admin-stat"><div class="as-icon">👁️</div><div class="as-num">${stats.total.toLocaleString()}</div><div class="as-lbl">Total Visits</div></div>
+        <div class="admin-stat"><div class="as-icon">📅</div><div class="as-num">${stats.today}</div><div class="as-lbl">Today</div></div>
+        <div class="admin-stat"><div class="as-icon">📆</div><div class="as-num">${stats.yesterday}</div><div class="as-lbl">Yesterday</div></div>
+        <div class="admin-stat"><div class="as-icon">📊</div><div class="as-num">${stats.thisWeek}</div><div class="as-lbl">This Week</div></div>
+        <div class="admin-stat"><div class="as-icon">🗓️</div><div class="as-num">${stats.thisMonth}</div><div class="as-lbl">Last 30 Days</div></div>
+        <div class="admin-stat"><div class="as-icon">🔵</div><div class="as-num">${stats.uniqueToday}</div><div class="as-lbl">Unique Today</div></div>
+      </div>
+
+      <div class="dash-card" style="margin-bottom:20px;">
+        <h3 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:20px;">📈 Last 7 Days</h3>
+        <div style="display:flex;align-items:flex-end;gap:6px;height:100px;">${bars}</div>
+        <div style="display:flex;gap:6px;margin-top:8px;">${labels}</div>
+      </div>
+
+      <div class="dash-card">
+        <h3 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:16px;">🔗 Top Pages</h3>
+        ${topPagesHtml}
+      </div>`;
+  } catch (e) {
+    wrap.innerHTML = `<div style="text-align:center;padding:40px;color:var(--error);">⚠️ ${escHtml(e.message || 'Failed to load analytics.')}</div>`;
+  }
 }
 
 /* ====== MESSAGES ====== */

@@ -1,7 +1,13 @@
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
+const crypto  = require('crypto');
 require('dotenv').config();
+
+const { query: trackQuery } = require('./db');
+
+const BOT_RE   = /bot|crawl|spider|slurp|baiduspider|yandex|bingbot|python|curl|wget|node-fetch|axios|postman|insomnia/i;
+const SKIP_TRK = /^\/api\/|^\/admin|^\/dashboard|^\/login|^\/signup/;
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -43,14 +49,36 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../public'), { redirect: false }));
 
 /* -------------------------------------------------------
+   Visitor Tracking Middleware
+   Fires only for real page requests (not static files,
+   not API, not admin/login/signup). Bots filtered out.
+------------------------------------------------------- */
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !SKIP_TRK.test(req.path)) {
+    const ua = req.headers['user-agent'] || '';
+    if (!BOT_RE.test(ua)) {
+      const raw    = (req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim();
+      const ipHash = crypto.createHash('sha256').update(raw || 'unknown').digest('hex').slice(0, 32);
+      const ref    = (req.headers['referer'] || '').slice(0, 500);
+      trackQuery(
+        'INSERT INTO page_visits (page, ip_hash, user_agent, referrer) VALUES (?, ?, ?, ?)',
+        [req.path.slice(0, 255), ipHash, ua.slice(0, 500), ref]
+      ).catch(() => {});
+    }
+  }
+  next();
+});
+
+/* -------------------------------------------------------
    API Routes
 ------------------------------------------------------- */
-app.use('/api/auth',     require('./routes/auth'));
+app.use('/api/auth',      require('./routes/auth'));
 app.use('/api/contact',  require('./routes/contact'));
 app.use('/api/services', require('./routes/services'));
 app.use('/api/projects', require('./routes/projects'));
-app.use('/api/users',    require('./routes/users'));
-app.use('/api/gallery',  require('./routes/gallery'));
+app.use('/api/users',     require('./routes/users'));
+app.use('/api/gallery',   require('./routes/gallery'));
+app.use('/api/analytics', require('./routes/analytics'));
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'vTechZone API is running!' });
@@ -78,7 +106,8 @@ const blogPosts = {
   '/blog/ssd-upgrade-guide':       'blog/ssd-upgrade-guide.html',
   '/blog/laptop-overheating-fix':  'blog/laptop-overheating-fix.html',
   '/blog/bca-project-guide':       'blog/bca-project-guide.html',
-  '/blog/hard-drive-health-guide': 'blog/hard-drive-health-guide.html',
+  '/blog/hard-drive-health-guide':     'blog/hard-drive-health-guide.html',
+  '/blog/laptop-repair-cost-jaunpur': 'blog/laptop-repair-cost-jaunpur.html',
 };
 
 Object.entries({ ...pages, ...blogPosts }).forEach(([route, file]) => {
