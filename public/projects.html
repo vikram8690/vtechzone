@@ -67,12 +67,28 @@
 <nav class="navbar scrolled" id="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo"><div class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 26" width="22" height="22" aria-hidden="true"><polyline points="2,3 8,3 12,23" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,3 16,3 12,23" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="2" cy="3" r="2" fill="white"/><circle cx="22" cy="3" r="2" fill="white"/><circle cx="12" cy="23" r="2" fill="white"/></svg></div><span>v<span>Tech</span>Zone</span></a>
+    
+        param($m)
+        $orig = $m.Value
+        # Check which page we are on based on active class
+        $isServices = $orig -match '/services"[^>]*active'
+        $isProjects = $orig -match '/projects"[^>]*active'
+        $isContact  = $orig -match '/contact"[^>]*active'
+        $homeActive     = if (-not $isServices -and -not $isProjects -and -not $isContact) { ' active' } else { '' }
+        $servicesActive = if ($isServices) { ' active' } else { '' }
+        $projectsActive = if ($isProjects) { ' active' } else { '' }
+        $contactActive  = if ($isContact)  { ' active' } else { '' }
+        @"
     <div class="nav-menu">
-      <a href="/"    class="nav-link">Home</a>
+      <a href="/"         class="nav-link">Home</a>
       <a href="/services" class="nav-link">Services</a>
       <a href="/projects" class="nav-link active">Projects</a>
+      <a href="/photos"   class="nav-link">Photos</a>
+      <a href="/blog"     class="nav-link nav-new">Blog</a>
       <a href="/contact"  class="nav-link">Contact</a>
     </div>
+"@
+    
     <div class="nav-actions">
       <button class="dark-toggle" title="Toggle dark mode">🌙</button>
       <a href="/login"  class="btn btn-outline btn-sm nav-login">Login</a>

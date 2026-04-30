@@ -316,6 +316,26 @@ input, textarea, select { font-family: var(--font-body); outline: none; }
 .nav-logo > span > span { color: #a78bfa; }
 .navbar.scrolled .nav-logo > span > span { color: var(--accent); }
 
+/* "Blog" — New badge */
+.nav-link.nav-new { position: relative; }
+.nav-link.nav-new::after {
+  content: 'NEW';
+  position: absolute;
+  top: 2px; right: -2px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 1px 5px;
+  border-radius: 4px;
+  pointer-events: none;
+  line-height: 1.6;
+}
+.navbar:not(.scrolled) .nav-link.nav-new::after {
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+}
+
 /* Nav links */
 .nav-menu { display: flex; align-items: center; gap: 4px; }
 .nav-link {
