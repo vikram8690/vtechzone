@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 60" width="260" height="60" role="img" aria-label="vTechZone">
+  <defs>
+    <linearGradient id="badge-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="v-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon badge -->
+  <rect x="0" y="5" width="50" height="50" rx="12" fill="url(#badge-bg)"/>
+  <!-- Circuit-V mark (white) inside badge -->
+  <polyline points="8,19 15,19 25,52" fill="none" stroke="white" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="42,19 35,19 25,52" fill="none" stroke="white" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="8"  cy="19" r="2.8" fill="white"/>
+  <circle cx="42" cy="19" r="2.8" fill="white"/>
+  <circle cx="25" cy="52" r="2.8" fill="white"/>
+  <circle cx="15" cy="19" r="1.6" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="35" cy="19" r="1.6" fill="rgba(255,255,255,0.55)"/>
+
+  <!-- Wordmark -->
+  <text font-family="'Poppins','Inter',sans-serif" font-size="28" font-weight="800" text-anchor="start">
+    <tspan x="66" y="41" fill="url(#v-grad)">v</tspan><tspan fill="#0f172a">Tech</tspan><tspan fill="#7c3aed" font-weight="500">Zone</tspan>
+  </text>
+</svg>
