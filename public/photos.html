@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://vtechzone.in/photos"/>
 <meta property="og:image" content="https://vtechzone.in/images/vikram.jpg"/>
 <link rel="icon" type="image/svg+xml" href="/images/logo-icon.svg"/>
-<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
 
@@ -111,9 +111,9 @@
   <div class="lightbox-caption" id="lbCaption"></div>
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/premium.js"></script>
-<script src="js/chatbot.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/premium.js"></script>
+<script src="/js/chatbot.js"></script>
 <script>
 window.addEventListener('load', () => setTimeout(() => { const l=document.getElementById('loader'); if(l)l.classList.add('hidden'); }, 500));
 
@@ -166,19 +166,71 @@ document.addEventListener('keydown', (e) => {
 });
 
 const grid = document.getElementById('galleryGrid');
-grid.innerHTML = photos.map((p, i) => `
-  <div class="gallery-item fade-in" style="animation-delay:${i*0.06}s;" onclick="openLightbox(${i})">
-    <img src="${p.src}" alt="${p.caption}"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-         loading="lazy"/>
-    <div class="gallery-placeholder" style="display:none;background:${p.bg};">
-      <div class="gallery-ph-icon">${p.emoji}</div>
-      <span>${p.caption}</span>
-      <small style="opacity:0.6;font-size:11px;">Add photo: ${p.src.split('/').pop()}</small>
-    </div>
-    <div class="gallery-overlay"><span>${p.caption}</span></div>
-  </div>
-`).join('');
+grid.innerHTML = photos.map((p, i) => {
+  const isGallery = p.src.includes('/gallery/');
+  const slot = isGallery ? p.src.split('/').pop().replace(/\.[^.]+$/, '') : null;
+  const uploadBtn = isGallery
+    ? `<button class="gallery-upload-btn" id="ub-${i}" style="display:none;"
+         onclick="event.stopPropagation();triggerUpload(${i},'${slot}')">📷 Upload Photo</button>`
+    : '';
+  return `
+    <div class="gallery-item fade-in" data-index="${i}" style="animation-delay:${i*0.06}s;" onclick="openLightbox(${i})">
+      <img src="${p.src}" alt="${p.caption}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';showUploadBtn(${i});"
+           loading="lazy"/>
+      <div class="gallery-placeholder" style="display:none;background:${p.bg};">
+        <div class="gallery-ph-icon">${p.emoji}</div>
+        <span>${p.caption}</span>
+        ${uploadBtn}
+      </div>
+      <div class="gallery-overlay"><span>${p.caption}</span></div>
+    </div>`;
+}).join('');
+
+function showUploadBtn(i) {
+  if (typeof isAdmin === 'function' && isAdmin()) {
+    const btn = document.getElementById('ub-' + i);
+    if (btn) btn.style.display = 'inline-flex';
+  }
+}
+
+async function triggerUpload(index, slot) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/jpeg,image/png,image/webp';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const btn = document.getElementById('ub-' + index);
+    const card = document.querySelector(`.gallery-item[data-index="${index}"]`);
+    if (btn) { btn.textContent = '⏳ Uploading…'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('photo', file);
+    try {
+      const res = await fetch(`/api/gallery/upload?slot=${slot}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        const img = card.querySelector('img');
+        img.src = data.url + '?t=' + Date.now();
+        img.style.display = '';
+        img.onerror = null;
+        card.querySelector('.gallery-placeholder').style.display = 'none';
+        photos[index].src = data.url;
+      } else {
+        alert(data.message || 'Upload failed. Make sure you are logged in as admin.');
+        if (btn) { btn.textContent = '📷 Upload Photo'; btn.disabled = false; }
+      }
+    } catch {
+      alert('Upload error. Please try again.');
+      if (btn) { btn.textContent = '📷 Upload Photo'; btn.disabled = false; }
+    }
+  };
+  input.click();
+}
 
 updateNavAuth();
 </script>

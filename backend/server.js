@@ -1,7 +1,10 @@
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
+const fs      = require('fs');
+const multer  = require('multer');
 require('dotenv').config();
+const { verifyToken, adminOnly } = require('./middleware/auth');
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -28,10 +31,19 @@ app.use((req, res, next) => {
   next();
 });
 
+/* strip trailing slashes (except root) */
+app.use((req, res, next) => {
+  if (req.path !== '/' && req.path.endsWith('/')) {
+    return res.redirect(301, req.path.slice(0, -1));
+  }
+  next();
+});
+
 /* -------------------------------------------------------
    Static assets: CSS, JS, images — NOT .html files
+   redirect:false prevents /blog → /blog/ when blog/ dir exists
 ------------------------------------------------------- */
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public'), { redirect: false }));
 
 /* -------------------------------------------------------
    API Routes
@@ -44,6 +56,46 @@ app.use('/api/users',    require('./routes/users'));
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'vTechZone API is running!' });
+});
+
+/* -------------------------------------------------------
+   Gallery photo upload  POST /api/gallery/upload?slot=g-workshop
+   Requires: logged-in admin user
+------------------------------------------------------- */
+const GALLERY_DIR = path.join(__dirname, '../public/images/gallery');
+if (!fs.existsSync(GALLERY_DIR)) fs.mkdirSync(GALLERY_DIR, { recursive: true });
+
+const ALLOWED_SLOTS = ['g-workshop','g-repair-1','g-screen-repair','g-shop','g-counter','g-components','g-disassembly','g-repair-2'];
+
+const galleryStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, GALLERY_DIR),
+  filename: (req, file, cb) => {
+    const slot = (req.query.slot || '').replace(/[^a-z0-9-]/gi, '');
+    if (!ALLOWED_SLOTS.includes(slot)) return cb(new Error('Invalid slot name'));
+    const ext = /\.(png|gif|webp)$/i.test(file.originalname)
+      ? file.originalname.split('.').pop().toLowerCase()
+      : 'jpg';
+    cb(null, `${slot}.${ext}`);
+  }
+});
+
+const uploadGallery = multer({
+  storage: galleryStorage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) return cb(new Error('Images only'));
+    cb(null, true);
+  }
+});
+
+app.post('/api/gallery/upload', verifyToken, adminOnly, (req, res, next) => {
+  uploadGallery.single('photo')(req, res, (err) => {
+    if (err) return res.status(400).json({ success: false, message: err.message });
+    if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+    const ext = req.file.filename.split('.').pop();
+    const slot = (req.query.slot || '').replace(/[^a-z0-9-]/gi, '');
+    res.json({ success: true, url: `/images/gallery/${slot}.${ext}` });
+  });
 });
 
 /* -------------------------------------------------------
