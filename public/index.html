@@ -418,38 +418,101 @@
   </div>
 </section>
 
-<!-- ===== VIDEO SECTION ===== -->
+<!-- ===== VIDEO / PROMO SLIDESHOW SECTION ===== -->
 <section class="video-section">
   <div class="container">
     <div class="text-center" style="margin-bottom:44px;">
-      <div class="section-tag" style="color:#a78bfa;background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.3);">🎬 Watch Our Story</div>
+      <div class="section-tag" style="color:#a78bfa;background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.3);">🎬 Our Story</div>
       <h2 class="section-title" style="color:white;">See vTechZone in Action</h2>
       <p class="section-subtitle" style="color:rgba(255,255,255,0.55);">Expert repairs, fast turnaround, honest pricing — right here in Jaunpur.</p>
     </div>
 
     <div class="video-wrap">
-      <div class="video-frame">
+      <div class="video-frame" style="padding-top:56.25%;">
 
-        <!-- YouTube embed — replace VIDEO_ID with your actual YouTube video ID -->
-        <iframe id="yt-iframe"
-          src="about:blank"
-          data-src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0&modestbranding=1"
-          allow="autoplay; fullscreen"
-          allowfullscreen
-          style="display:none;">
-        </iframe>
+        <!-- Auto-playing promo slideshow -->
+        <div id="promoSlideshow" style="position:absolute;inset:0;overflow:hidden;border-radius:0;">
 
-        <!-- Thumbnail shown until play is clicked -->
-        <div class="video-thumb" id="videoThumb" onclick="playVideo()">
-          <div class="video-thumb-bg"></div>
-          <div class="play-btn"></div>
-          <div class="video-thumb-label">▶ Watch Our Story</div>
-          <div class="video-overlay-bar">
-            <div>
-              <div class="video-overlay-tag">vTechZone Jaunpur</div>
-              <div class="video-overlay-title">Your Local Tech Experts — Laptop Repair &amp; More</div>
+          <!-- Slides -->
+          <div class="promo-slide active" style="background-image:url('/images/01.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Welcome</div>
+              <div class="promo-title">vTechZone</div>
+              <div class="promo-sub">Jaunpur's #1 Tech Service Center</div>
             </div>
           </div>
+          <div class="promo-slide" style="background-image:url('/images/02.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Repair</div>
+              <div class="promo-title">Laptop Repair Experts</div>
+              <div class="promo-sub">Screen · Battery · Motherboard · Keyboard</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/03.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Hardware</div>
+              <div class="promo-title">Computer Hardware</div>
+              <div class="promo-sub">RAM · SSD · CPU · Components</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/04.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Software</div>
+              <div class="promo-title">Software Development</div>
+              <div class="promo-sub">Websites · Apps · Custom Software</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/05.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Students</div>
+              <div class="promo-title">Student Projects</div>
+              <div class="promo-sub">BCA · MCA · B.Tech Final Year</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/06.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Fast Service</div>
+              <div class="promo-title">Same Day Repair</div>
+              <div class="promo-sub">Most repairs done in 2–4 hours</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/07.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Trusted</div>
+              <div class="promo-title">500+ Happy Customers</div>
+              <div class="promo-sub">Honest pricing · No hidden charges</div>
+            </div>
+          </div>
+          <div class="promo-slide" style="background-image:url('/images/08.jpg')">
+            <div class="promo-slide-overlay"></div>
+            <div class="promo-slide-content">
+              <div class="promo-tag">Visit Us</div>
+              <div class="promo-title">Near VBSPU, Jaunpur</div>
+              <div class="promo-sub" style="display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <a href="https://wa.me/918604614912" target="_blank" style="background:white;color:#7c3aed;padding:8px 20px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;">💬 WhatsApp Now</a>
+                <a href="tel:+918604614912" style="border:1.5px solid rgba(255,255,255,0.5);color:white;padding:8px 20px;border-radius:50px;font-weight:600;font-size:14px;text-decoration:none;">📞 Call Us</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.15);z-index:10;">
+            <div id="promoProgress" style="height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width 0.1s linear;"></div>
+          </div>
+
+          <!-- Slide dots -->
+          <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;" id="promoDots"></div>
+
+          <!-- Prev/Next -->
+          <button onclick="promoStep(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;">‹</button>
+          <button onclick="promoStep(1)"  style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;">›</button>
         </div>
 
       </div>
@@ -458,7 +521,7 @@
     <div class="video-badges">
       <div class="video-badge">💻 Laptop Repair</div>
       <div class="video-badge">🔩 Hardware Solutions</div>
-      <div class="video-badge">💻 Software Development</div>
+      <div class="video-badge">🖥️ Software Development</div>
       <div class="video-badge">🎓 Student Projects</div>
       <div class="video-badge">📍 Near VBSPU, Jaunpur</div>
     </div>
@@ -652,14 +715,43 @@
       if (l) l.classList.add('hidden');
     }, 700);
   });
-  function playVideo() {
-    const thumb  = document.getElementById('videoThumb');
-    const iframe = document.getElementById('yt-iframe');
-    const src    = iframe.getAttribute('data-src');
-    iframe.src = src;
-    iframe.style.display = 'block';
-    thumb.classList.add('hidden');
-  }
+  /* Promo slideshow */
+  (function() {
+    const slides   = document.querySelectorAll('.promo-slide');
+    const dotsWrap = document.getElementById('promoDots');
+    const progress = document.getElementById('promoProgress');
+    const DURATION = 4000;
+    let current = 0, timer, progTimer, elapsed = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'promo-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goTo(i);
+      dotsWrap.appendChild(d);
+    });
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dotsWrap.children[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dotsWrap.children[current].classList.add('active');
+      restartProgress();
+    }
+
+    function restartProgress() {
+      clearInterval(timer); clearInterval(progTimer);
+      elapsed = 0; progress.style.width = '0%';
+      progTimer = setInterval(() => {
+        elapsed += 100;
+        progress.style.width = Math.min(elapsed / DURATION * 100, 100) + '%';
+      }, 100);
+      timer = setTimeout(() => goTo(current + 1), DURATION);
+    }
+
+    window.promoStep = (dir) => goTo(current + dir);
+    restartProgress();
+  })();
   updateNavAuth();
 </script>
 </body>
