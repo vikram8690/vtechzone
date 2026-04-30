@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vtechzone.in/sitemap.xml
+
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /login
+Disallow: /signup

@@ -53,6 +53,8 @@ const pages = {
   '/':          'index.html',
   '/services':  'services.html',
   '/projects':  'projects.html',
+  '/photos':    'photos.html',
+  '/blog':      'blog.html',
   '/contact':   'contact.html',
   '/login':     'login.html',
   '/signup':    'signup.html',
@@ -60,7 +62,15 @@ const pages = {
   '/admin':     'admin.html',
 };
 
-Object.entries(pages).forEach(([route, file]) => {
+const blogPosts = {
+  '/blog/laptop-speed-tips':       'blog/laptop-speed-tips.html',
+  '/blog/ssd-upgrade-guide':       'blog/ssd-upgrade-guide.html',
+  '/blog/laptop-overheating-fix':  'blog/laptop-overheating-fix.html',
+  '/blog/bca-project-guide':       'blog/bca-project-guide.html',
+  '/blog/hard-drive-health-guide': 'blog/hard-drive-health-guide.html',
+};
+
+Object.entries({ ...pages, ...blogPosts }).forEach(([route, file]) => {
   app.get(route, (req, res) => {
     res.sendFile(path.join(__dirname, '../public', file));
   });
