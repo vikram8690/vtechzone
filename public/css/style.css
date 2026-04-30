@@ -1413,7 +1413,7 @@ input, textarea, select { font-family: var(--font-body); outline: none; }
 .breadcrumb {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   font-size: 14px;
   color: rgba(255,255,255,0.5);

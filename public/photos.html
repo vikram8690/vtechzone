@@ -117,83 +117,83 @@
 <script>
 window.addEventListener('load', () => setTimeout(() => { const l=document.getElementById('loader'); if(l)l.classList.add('hidden'); }, 500));
 
-const photos = [
-  { src: 'images/gallery/g-workshop.jpg',    caption: 'Workshop & Tech Inventory',         emoji: '🔧', bg: 'linear-gradient(135deg,rgba(37,99,235,0.1),rgba(124,58,237,0.12))' },
-  { src: 'images/gallery/g-repair-1.jpg',    caption: 'Laptop Motherboard Repair',          emoji: '💻', bg: 'linear-gradient(135deg,rgba(124,58,237,0.1),rgba(37,99,235,0.12))' },
-  { src: 'images/gallery/g-screen-repair.jpg', caption: 'Screen Replacement Work',          emoji: '🖥️', bg: 'linear-gradient(135deg,rgba(16,185,129,0.1),rgba(37,99,235,0.08))' },
-  { src: 'images/gallery/g-shop.jpg',         caption: 'Our Shop – Near VBSPU, Jaunpur',   emoji: '🏪', bg: 'linear-gradient(135deg,rgba(245,158,11,0.1),rgba(124,58,237,0.08))' },
-  { src: 'images/gallery/g-counter.jpg',      caption: 'Service Counter & Display',         emoji: '🖥️', bg: 'linear-gradient(135deg,rgba(239,68,68,0.08),rgba(124,58,237,0.08))' },
-  { src: 'images/gallery/g-components.jpg',   caption: 'Computer Components & RAM',         emoji: '🔩', bg: 'linear-gradient(135deg,rgba(6,182,212,0.1),rgba(37,99,235,0.08))' },
-  { src: 'images/gallery/g-disassembly.jpg',  caption: 'Complete Laptop Disassembly',       emoji: '⚙️', bg: 'linear-gradient(135deg,rgba(37,99,235,0.12),rgba(16,185,129,0.08))' },
-  { src: 'images/vikram.jpg',                 caption: 'Vikram – Founder & Lead Technician', emoji: '👨‍💻', bg: 'linear-gradient(135deg,rgba(124,58,237,0.12),rgba(37,99,235,0.12))' },
-  { src: 'images/gallery/g-repair-2.jpg',     caption: 'Expert Laptop Repair Service',      emoji: '🛠️', bg: 'linear-gradient(135deg,rgba(37,99,235,0.08),rgba(245,158,11,0.08))' },
-];
-
+let photos = [];
 let currentIndex = 0;
 
+/* ---- Lightbox ---- */
 function openLightbox(index) {
+  if (!photos[index] || !photos[index].src) return;
   currentIndex = index;
   const lb = document.getElementById('lightbox');
-  const img = document.getElementById('lbImg');
-  const caption = document.getElementById('lbCaption');
-  img.src = photos[index].src;
-  img.alt = photos[index].caption;
-  caption.textContent = photos[index].caption;
+  document.getElementById('lbImg').src = photos[index].src;
+  document.getElementById('lbImg').alt = photos[index].caption;
+  document.getElementById('lbCaption').textContent = photos[index].caption;
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
 }
-
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
-document.getElementById('lightbox').addEventListener('click', (e) => { if(e.target.id === 'lightbox') closeLightbox(); });
-document.getElementById('lbPrev').addEventListener('click', () => {
-  currentIndex = (currentIndex - 1 + photos.length) % photos.length;
-  openLightbox(currentIndex);
-});
-document.getElementById('lbNext').addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % photos.length;
-  openLightbox(currentIndex);
-});
+document.getElementById('lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLightbox(); });
+document.getElementById('lbPrev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + photos.length) % photos.length; openLightbox(currentIndex); });
+document.getElementById('lbNext').addEventListener('click', () => { currentIndex = (currentIndex + 1) % photos.length; openLightbox(currentIndex); });
 document.addEventListener('keydown', (e) => {
   if (!document.getElementById('lightbox').classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft')  { currentIndex = (currentIndex-1+photos.length)%photos.length; openLightbox(currentIndex); }
-  if (e.key === 'ArrowRight') { currentIndex = (currentIndex+1)%photos.length; openLightbox(currentIndex); }
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')  { currentIndex = (currentIndex - 1 + photos.length) % photos.length; openLightbox(currentIndex); }
+  if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % photos.length; openLightbox(currentIndex); }
 });
 
-const grid = document.getElementById('galleryGrid');
-grid.innerHTML = photos.map((p, i) => {
-  const isGallery = p.src.includes('/gallery/');
-  const slot = isGallery ? p.src.split('/').pop().replace(/\.[^.]+$/, '') : null;
-  const uploadBtn = isGallery
-    ? `<button class="gallery-upload-btn" id="ub-${i}" style="display:none;"
-         onclick="event.stopPropagation();triggerUpload(${i},'${slot}')">📷 Upload Photo</button>`
-    : '';
-  return `
-    <div class="gallery-item fade-in" data-index="${i}" style="animation-delay:${i*0.06}s;" onclick="openLightbox(${i})">
-      <img src="${p.src}" alt="${p.caption}"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';showUploadBtn(${i});"
-           loading="lazy"/>
-      <div class="gallery-placeholder" style="display:none;background:${p.bg};">
-        <div class="gallery-ph-icon">${p.emoji}</div>
-        <span>${p.caption}</span>
-        ${uploadBtn}
-      </div>
-      <div class="gallery-overlay"><span>${p.caption}</span></div>
-    </div>`;
-}).join('');
-
-function showUploadBtn(i) {
-  if (typeof isAdmin === 'function' && isAdmin()) {
-    const btn = document.getElementById('ub-' + i);
-    if (btn) btn.style.display = 'inline-flex';
-  }
+/* ---- Gallery load from API ---- */
+async function loadGallery() {
+  try {
+    const res  = await fetch('/api/gallery');
+    const data = await res.json();
+    if (data.success) {
+      photos = data.photos.map(p => ({
+        src:     p.src ? '/' + p.src : null,
+        caption: p.caption,
+        emoji:   p.emoji,
+        bg:      p.bg_gradient,
+        slot:    p.slot,
+      }));
+    }
+  } catch { /* network error — all placeholders */ }
+  renderGallery();
 }
 
+function renderGallery() {
+  const admin = typeof isAdmin === 'function' && isAdmin();
+  const grid  = document.getElementById('galleryGrid');
+  grid.innerHTML = photos.map((p, i) => {
+    const hasImg    = !!p.src;
+    const isUploadable = p.slot && p.slot !== 'vikram';
+    const uploadBtn = (isUploadable && admin)
+      ? `<button class="gallery-upload-btn" id="ub-${i}"
+           onclick="event.stopPropagation();triggerUpload(${i},'${p.slot}')">📷 Upload Photo</button>`
+      : '';
+    const imgTag = hasImg
+      ? `<img src="${p.src}" alt="${p.caption}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+              loading="lazy"/>`
+      : '';
+    return `
+      <div class="gallery-item fade-in" data-index="${i}" style="animation-delay:${i*0.06}s;"
+           onclick="${hasImg ? 'openLightbox(' + i + ')' : ''}">
+        ${imgTag}
+        <div class="gallery-placeholder" style="${hasImg ? 'display:none;' : ''}background:${p.bg};">
+          <div class="gallery-ph-icon">${p.emoji}</div>
+          <span>${p.caption}</span>
+          ${uploadBtn}
+        </div>
+        <div class="gallery-overlay"><span>${p.caption}</span></div>
+      </div>`;
+  }).join('');
+}
+
+/* ---- Photo upload ---- */
 async function triggerUpload(index, slot) {
   const input = document.createElement('input');
   input.type = 'file';
@@ -201,25 +201,29 @@ async function triggerUpload(index, slot) {
   input.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const btn = document.getElementById('ub-' + index);
+    const btn  = document.getElementById('ub-' + index);
     const card = document.querySelector(`.gallery-item[data-index="${index}"]`);
     if (btn) { btn.textContent = '⏳ Uploading…'; btn.disabled = true; }
     const formData = new FormData();
     formData.append('photo', file);
     try {
-      const res = await fetch(`/api/gallery/upload?slot=${slot}`, {
+      const res  = await fetch(`/api/gallery/upload?slot=${slot}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${getToken()}` },
         body: formData
       });
       const data = await res.json();
       if (data.success) {
-        const img = card.querySelector('img');
-        img.src = data.url + '?t=' + Date.now();
-        img.style.display = '';
-        img.onerror = null;
-        card.querySelector('.gallery-placeholder').style.display = 'none';
         photos[index].src = data.url;
+        const ph  = card.querySelector('.gallery-placeholder');
+        const img = document.createElement('img');
+        img.src = data.url + '?t=' + Date.now();
+        img.alt = photos[index].caption;
+        img.loading = 'lazy';
+        img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; };
+        card.insertBefore(img, ph);
+        ph.style.display = 'none';
+        card.setAttribute('onclick', `openLightbox(${index})`);
       } else {
         alert(data.message || 'Upload failed. Make sure you are logged in as admin.');
         if (btn) { btn.textContent = '📷 Upload Photo'; btn.disabled = false; }
@@ -232,6 +236,7 @@ async function triggerUpload(index, slot) {
   input.click();
 }
 
+loadGallery();
 updateNavAuth();
 </script>
 </body>
