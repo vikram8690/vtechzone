@@ -146,7 +146,7 @@
   z-index: 10;
   width: 100%;
   max-width: 600px;
-  padding: 0 clamp(24px, 6vw, 80px);
+  padding: 82px clamp(24px, 6vw, 80px) 0;
   padding-left: max(clamp(24px,6vw,80px), calc((100vw - 1280px) / 2 + clamp(24px,4vw,60px)));
 }
 
@@ -176,8 +176,10 @@
 }
 .hl {
   display: block;
-  overflow: hidden;
-  line-height: 1.05;
+  overflow-x: visible; /* allow letters to breathe past container edge */
+  overflow-y: hidden;  /* clip vertically so words animate up from hidden */
+  line-height: 1.1;
+  padding-bottom: 0.08em; /* prevent descender clipping at bottom */
 }
 .word {
   display: inline-block;
@@ -628,7 +630,7 @@
 }
 @media (max-width: 768px) {
   .hero-ultra { height: 100svh; min-height: 580px; max-height: 800px; }
-  .slide-content-ultra { padding: 0 22px; padding-left: 22px; }
+  .slide-content-ultra { padding: 72px 22px 0; padding-left: 22px; }
   .word { font-size: clamp(38px, 10vw, 58px); letter-spacing: -1.5px; }
   .slide-eyebrow { font-size: 11px; padding: 7px 14px; margin-bottom: 20px; }
   .slide-subheading { font-size: 14px; margin-bottom: 28px; }
