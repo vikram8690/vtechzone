@@ -75,6 +75,7 @@
           <div class="sidebar-link" id="alink-services" onclick="showPanel('services',this)"><span class="icon">🔧</span> Services</div>
           <div class="sidebar-link" id="alink-projects" onclick="showPanel('projects',this)"><span class="icon">📁</span> Projects</div>
           <div class="sidebar-link" id="alink-users" onclick="showPanel('users',this)"><span class="icon">👥</span> Users</div>
+          <div class="sidebar-link" id="alink-photos" onclick="showPanel('photos',this)"><span class="icon">📷</span> Photos</div>
           <div style="height:1px;background:var(--border);margin:12px 0;"></div>
           <a href="/" class="sidebar-link"><span class="icon">🌐</span> View Website</a>
           <div class="sidebar-link" onclick="doLogout()" style="color:var(--error);"><span class="icon">🚪</span> Logout</div>
@@ -154,6 +155,20 @@
             <div id="users-wrap">
               <div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>
             </div>
+          </div>
+        </div>
+
+        <!-- ====== PHOTOS ====== -->
+        <div id="panel-photos" style="display:none;">
+          <div class="dash-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+              <div>
+                <h2 style="margin:0;">Gallery Photos</h2>
+                <p style="font-size:13px;color:var(--text-light);margin-top:4px;">Click a slot to upload a photo from your computer. Max 8 MB per image.</p>
+              </div>
+              <button onclick="loadAdminPhotos()" class="btn btn-outline btn-sm">🔄 Refresh</button>
+            </div>
+            <div id="admin-gallery-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;"></div>
           </div>
         </div>
 
@@ -271,13 +286,78 @@ function loading(wrapId) {
 }
 
 /* ====== PANEL SWITCHING ====== */
-const PANELS = ['overview','messages','services','projects','users'];
+const PANELS = ['overview','messages','services','projects','users','photos'];
 function showPanel(name, clickedEl) {
   PANELS.forEach(p => { document.getElementById('panel-'+p).style.display = p===name ? 'block' : 'none'; });
   document.querySelectorAll('.sidebar-nav .sidebar-link').forEach(l => l.classList.remove('active'));
   if (clickedEl) clickedEl.classList.add('active');
-  const loaders = { messages: loadMessages, services: loadServices, projects: loadProjects, users: loadUsers };
+  const loaders = { messages: loadMessages, services: loadServices, projects: loadProjects, users: loadUsers, photos: loadAdminPhotos };
   if (loaders[name]) loaders[name]();
+}
+
+/* ====== ADMIN PHOTO GALLERY ====== */
+async function loadAdminPhotos() {
+  const wrap = document.getElementById('admin-gallery-wrap');
+  wrap.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading…</div>';
+  try {
+    const r = await apiRequest('/gallery');
+    if (!r.ok) throw new Error('Failed');
+    const photos = r.data.photos || [];
+    wrap.innerHTML = photos.map((p, i) => {
+      const hasImg = !!p.src;
+      const isUploadable = p.slot !== 'vikram';
+      return `<div style="border-radius:12px;overflow:hidden;border:2px solid ${hasImg ? 'var(--primary)' : 'var(--border)'};background:var(--light);transition:box-shadow .2s;" id="aph-${i}">
+        <div style="position:relative;padding-top:70%;background:${p.bg_gradient};">
+          ${hasImg
+            ? `<img src="/${p.src}" alt="${p.caption}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"/>`
+            : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;opacity:0.4;">${p.emoji}</div>`
+          }
+          ${hasImg ? '<div style="position:absolute;top:8px;right:8px;background:#10b981;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;">✓ UPLOADED</div>' : ''}
+        </div>
+        <div style="padding:12px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:8px;">${p.caption}</div>
+          ${isUploadable
+            ? `<button onclick="adminUpload(${i},'${p.slot}')" class="btn btn-${hasImg ? 'outline' : 'primary'} btn-sm" style="width:100%;justify-content:center;" id="aub-${i}">
+                ${hasImg ? '🔄 Replace Photo' : '📷 Upload Photo'}
+               </button>`
+            : `<div style="font-size:12px;color:var(--text-light);text-align:center;padding:4px;">Vikram's profile photo</div>`
+          }
+        </div>
+      </div>`;
+    }).join('');
+  } catch { wrap.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--error);">Failed to load gallery. Please refresh.</div>'; }
+}
+
+async function adminUpload(index, slot) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/jpeg,image/png,image/webp';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const btn = document.getElementById('aub-' + index);
+    if (btn) { btn.textContent = '⏳ Uploading…'; btn.disabled = true; }
+    const formData = new FormData();
+    formData.append('photo', file);
+    try {
+      const res = await fetch(`/api/gallery/upload?slot=${slot}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        loadAdminPhotos();
+      } else {
+        alert(data.message || 'Upload failed');
+        if (btn) { btn.textContent = '📷 Upload Photo'; btn.disabled = false; }
+      }
+    } catch {
+      alert('Upload error. Please try again.');
+      if (btn) { btn.textContent = '📷 Upload Photo'; btn.disabled = false; }
+    }
+  };
+  input.click();
 }
 
 /* ====== OVERVIEW STATS ====== */
