@@ -18,6 +18,7 @@
 <meta name="keywords" content="laptop repair Jaunpur, computer repair Jaunpur, SSD upgrade Jaunpur, student project BCA MCA Jaunpur, vTechZone, software development Jaunpur, near VBSPU"/>
 <link rel="stylesheet" href="/css/style.css"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="/css/hero-slider.css"/>
 <link rel="icon" type="image/svg+xml" href="/images/logo-icon.svg"/>
 <script type="application/ld+json">
 {
@@ -105,130 +106,224 @@
   <a href="/signup" class="btn btn-primary nav-signup">Sign Up</a>
 </div>
 
-<!-- ===== HERO SLIDER ===== -->
-<section class="hero-section">
-  <div class="swiper hero-swiper">
+<!-- ===== ULTRA PREMIUM 3D HERO SLIDER ===== -->
+<section class="hero-ultra" id="heroSection">
+
+  <!-- Particle canvas -->
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+
+  <div class="swiper hero-swiper-ultra">
     <div class="swiper-wrapper">
 
-      <!-- SLIDE 1 — Complete Tech Solutions -->
-      <div class="swiper-slide hero-slide slide-1">
-        <div class="slide-bg"></div>
-        <div class="slide-overlay"></div>
-        <div class="slide-shape slide-shape-1"></div>
-        <div class="slide-shape slide-shape-2"></div>
-        <div class="slide-content">
-          <div class="slide-badge">⚡ Trusted by 500+ Customers in Jaunpur</div>
-          <h1 class="slide-title">Complete Tech<br/><span>Solutions</span></h1>
-          <p class="slide-subtitle">Your one-stop technology center for repairs, hardware, software development and student projects — all under one roof.</p>
-          <div class="slide-actions">
-            <a href="/services" class="btn btn-white btn-lg">Explore Services →</a>
-            <a href="/contact"  class="btn btn-glass  btn-lg">Get Free Quote</a>
+      <!-- ─── SLIDE 1 · Complete Tech Solutions ─── -->
+      <div class="swiper-slide hero-slide-ultra" data-theme="blue">
+        <div class="slide-bg-ultra">
+          <div class="slide-grid-overlay"></div>
+          <div class="float-shape shape-blob-1"></div>
+          <div class="float-shape shape-blob-2"></div>
+          <div class="float-shape shape-ring-1"></div>
+          <div class="float-shape shape-ring-2"></div>
+        </div>
+        <div class="slide-content-ultra">
+          <div class="slide-eyebrow">⚡ Trusted by 500+ Customers in Jaunpur</div>
+          <h1 class="slide-heading">
+            <div class="hl"><span class="word">Complete</span></div>
+            <div class="hl"><span class="word accent">Tech</span> <span class="word">Solutions</span></div>
+          </h1>
+          <p class="slide-subheading">Laptop Repair &nbsp;·&nbsp; Hardware &nbsp;·&nbsp; Software Development</p>
+          <div class="slide-ctas">
+            <a href="/services" class="cta-primary">Explore Services →</a>
+            <a href="/contact"  class="cta-secondary">Get Free Quote</a>
           </div>
-          <div class="slide-metrics">
-            <div class="slide-metric">
-              <div class="slide-metric-num">500+</div>
-              <div class="slide-metric-lbl">Happy<br/>Customers</div>
+          <div class="slide-stats">
+            <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Happy Customers</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Avg Rating</div></div>
+          </div>
+        </div>
+        <div class="slide-visual-3d">
+          <div class="visual-card-wrap">
+            <div class="visual-main-card">
+              <span class="visual-emoji">💻</span>
+              <div class="visual-title">Expert Tech Services</div>
+              <div class="visual-subtitle">All under one roof</div>
+              <div class="visual-tags">
+                <span class="visual-tag">Laptop Repair</span>
+                <span class="visual-tag">Hardware</span>
+                <span class="visual-tag">Software</span>
+                <span class="visual-tag">Projects</span>
+              </div>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">5+</div>
-              <div class="slide-metric-lbl">Years<br/>Experience</div>
+            <div class="visual-sub-card sub-card-1">
+              <span class="sub-card-icon">✅</span>
+              <span class="sub-card-text">500+ Happy Clients</span>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">4.9★</div>
-              <div class="slide-metric-lbl">Customer<br/>Rating</div>
+            <div class="visual-sub-card sub-card-2">
+              <span class="sub-card-icon">⭐</span>
+              <span class="sub-card-text">4.9 / 5.0 Rating</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 2 — Laptop Repair -->
-      <div class="swiper-slide hero-slide slide-2">
-        <div class="slide-bg"></div>
-        <div class="slide-overlay"></div>
-        <div class="slide-shape slide-shape-1"></div>
-        <div class="slide-shape slide-shape-2"></div>
-        <div class="slide-content">
-          <div class="slide-badge">🔧 Same-Day Service · 30-Day Warranty</div>
-          <h2 class="slide-title">Laptop Repair<br/><span>Experts</span></h2>
-          <p class="slide-subtitle">Fast, affordable laptop repairs by certified technicians. Dell, HP, Lenovo, Asus, Apple MacBook — all brands covered.</p>
-          <div class="slide-actions">
-            <a href="/contact"       class="btn btn-white btn-lg">Book Repair →</a>
-            <a href="tel:+918604614912" class="btn btn-glass  btn-lg">📞 Call Now</a>
+      <!-- ─── SLIDE 2 · Expert Laptop Repair ─── -->
+      <div class="swiper-slide hero-slide-ultra" data-theme="orange">
+        <div class="slide-bg-ultra">
+          <div class="slide-grid-overlay"></div>
+          <div class="float-shape shape-blob-1"></div>
+          <div class="float-shape shape-blob-2"></div>
+          <div class="float-shape shape-ring-1"></div>
+          <div class="float-shape shape-ring-2"></div>
+        </div>
+        <div class="slide-content-ultra">
+          <div class="slide-eyebrow">🔧 Same-Day Service · 30-Day Warranty</div>
+          <h2 class="slide-heading">
+            <div class="hl"><span class="word">Expert</span></div>
+            <div class="hl"><span class="word accent">Laptop</span> <span class="word">Repair</span></div>
+          </h2>
+          <p class="slide-subheading">Fast &amp; Reliable · All Brands Covered · Jaunpur</p>
+          <div class="slide-ctas">
+            <a href="/contact"         class="cta-primary">Book Repair →</a>
+            <a href="tel:+918604614912" class="cta-secondary">📞 Call Now</a>
           </div>
-          <div class="slide-metrics">
-            <div class="slide-metric">
-              <div class="slide-metric-num">24h</div>
-              <div class="slide-metric-lbl">Avg.<br/>Turnaround</div>
+          <div class="slide-stats">
+            <div class="stat-item"><div class="stat-num">24h</div><div class="stat-label">Avg Turnaround</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">30d</div><div class="stat-label">Warranty</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">All</div><div class="stat-label">Brands Covered</div></div>
+          </div>
+        </div>
+        <div class="slide-visual-3d">
+          <div class="visual-card-wrap">
+            <div class="visual-main-card">
+              <span class="visual-emoji">🔧</span>
+              <div class="visual-title">Laptop Repair Experts</div>
+              <div class="visual-subtitle">Certified technicians</div>
+              <div class="visual-tags">
+                <span class="visual-tag">Screen Repair</span>
+                <span class="visual-tag">Battery</span>
+                <span class="visual-tag">Motherboard</span>
+                <span class="visual-tag">Keyboard</span>
+              </div>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">30d</div>
-              <div class="slide-metric-lbl">Service<br/>Warranty</div>
+            <div class="visual-sub-card sub-card-1">
+              <span class="sub-card-icon">⚡</span>
+              <span class="sub-card-text">24h Turnaround</span>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">All</div>
-              <div class="slide-metric-lbl">Brands<br/>Covered</div>
+            <div class="visual-sub-card sub-card-2">
+              <span class="sub-card-icon">🛡️</span>
+              <span class="sub-card-text">30-Day Warranty</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 3 — Software Development -->
-      <div class="swiper-slide hero-slide slide-3">
-        <div class="slide-bg"></div>
-        <div class="slide-overlay"></div>
-        <div class="slide-shape slide-shape-1"></div>
-        <div class="slide-shape slide-shape-2"></div>
-        <div class="slide-content">
-          <div class="slide-badge">⚙️ Web · Mobile · Desktop · APIs</div>
-          <h2 class="slide-title">Build Your Software<br/><span>With Us</span></h2>
-          <p class="slide-subtitle">Custom digital solutions for your business — from simple websites to complex enterprise applications built with modern tech stacks.</p>
-          <div class="slide-actions">
-            <a href="/projects" class="btn btn-white btn-lg">View Projects →</a>
-            <a href="/contact"  class="btn btn-glass  btn-lg">Get a Quote</a>
+      <!-- ─── SLIDE 3 · Build Your Software ─── -->
+      <div class="swiper-slide hero-slide-ultra" data-theme="green">
+        <div class="slide-bg-ultra">
+          <div class="slide-grid-overlay"></div>
+          <div class="float-shape shape-blob-1"></div>
+          <div class="float-shape shape-blob-2"></div>
+          <div class="float-shape shape-ring-1"></div>
+          <div class="float-shape shape-ring-2"></div>
+        </div>
+        <div class="slide-content-ultra">
+          <div class="slide-eyebrow">⚙️ Web · Mobile · Desktop · APIs</div>
+          <h2 class="slide-heading">
+            <div class="hl"><span class="word">Build</span> <span class="word">Your</span></div>
+            <div class="hl"><span class="word accent">Software</span></div>
+          </h2>
+          <p class="slide-subheading">Websites, Apps &amp; Custom Software Solutions</p>
+          <div class="slide-ctas">
+            <a href="/projects" class="cta-primary">View Projects →</a>
+            <a href="/contact"  class="cta-secondary">Get a Quote</a>
           </div>
-          <div class="slide-metrics">
-            <div class="slide-metric">
-              <div class="slide-metric-num">50+</div>
-              <div class="slide-metric-lbl">Projects<br/>Delivered</div>
+          <div class="slide-stats">
+            <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Projects Done</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Satisfaction</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">Clean</div><div class="stat-label">Modern Code</div></div>
+          </div>
+        </div>
+        <div class="slide-visual-3d">
+          <div class="visual-card-wrap">
+            <div class="visual-main-card code-card">
+              <div class="code-header">
+                <span class="cdot r"></span><span class="cdot y"></span><span class="cdot g"></span>
+                <span class="cfile">app.js</span>
+              </div>
+              <pre class="code-pre"><span class="ck">const</span> <span class="cv">project</span> <span class="co">=</span> <span class="cf">vTechZone</span>
+  <span class="cb">.</span><span class="cf">build</span><span class="cb">(</span><span class="cs">'web-app'</span><span class="cb">)</span><span class="co">;</span>
+
+<span class="cv">project</span><span class="cb">.</span><span class="cf">deploy</span><span class="cb">()</span>
+  <span class="cb">.</span><span class="cf">then</span><span class="cb">(()</span> <span class="co">=></span> <span class="cb">{</span>
+    <span class="cm">// ✅ Live!</span>
+  <span class="cb">}</span><span class="cb">)</span><span class="co">;</span></pre>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">100%</div>
-              <div class="slide-metric-lbl">Client<br/>Satisfaction</div>
+            <div class="visual-sub-card sub-card-1">
+              <span class="sub-card-icon">🚀</span>
+              <span class="sub-card-text">50+ Projects Delivered</span>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">Clean</div>
-              <div class="slide-metric-lbl">Modern<br/>Code</div>
+            <div class="visual-sub-card sub-card-2">
+              <span class="sub-card-icon">✨</span>
+              <span class="sub-card-text">React · Node · Python</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 4 — Student Projects -->
-      <div class="swiper-slide hero-slide slide-4">
-        <div class="slide-bg"></div>
-        <div class="slide-overlay"></div>
-        <div class="slide-shape slide-shape-1"></div>
-        <div class="slide-shape slide-shape-2"></div>
-        <div class="slide-content">
-          <div class="slide-badge">🎓 BCA · MCA · B.Tech · BE</div>
-          <h2 class="slide-title">Student Projects<br/><span>Support</span></h2>
-          <p class="slide-subtitle">Complete academic project assistance — from ideation to development, documentation, and presentation. Get top grades guaranteed!</p>
-          <div class="slide-actions">
-            <a href="/contact"  class="btn btn-white btn-lg">Start Project →</a>
-            <a href="/services" class="btn btn-glass  btn-lg">Learn More</a>
+      <!-- ─── SLIDE 4 · Student Projects ─── -->
+      <div class="swiper-slide hero-slide-ultra" data-theme="purple">
+        <div class="slide-bg-ultra">
+          <div class="slide-grid-overlay"></div>
+          <div class="float-shape shape-blob-1"></div>
+          <div class="float-shape shape-blob-2"></div>
+          <div class="float-shape shape-ring-1"></div>
+          <div class="float-shape shape-ring-2"></div>
+        </div>
+        <div class="slide-content-ultra">
+          <div class="slide-eyebrow">🎓 BCA · MCA · B.Tech · BE</div>
+          <h2 class="slide-heading">
+            <div class="hl"><span class="word">Student</span></div>
+            <div class="hl"><span class="word accent">Project</span> <span class="word">Support</span></div>
+          </h2>
+          <p class="slide-subheading">Complete Academic Help · Full Docs · Viva Prep</p>
+          <div class="slide-ctas">
+            <a href="/contact"  class="cta-primary">Start Your Project →</a>
+            <a href="/services" class="cta-secondary">Learn More</a>
           </div>
-          <div class="slide-metrics">
-            <div class="slide-metric">
-              <div class="slide-metric-num">A+</div>
-              <div class="slide-metric-lbl">Grade<br/>Target</div>
+          <div class="slide-stats">
+            <div class="stat-item"><div class="stat-num">A+</div><div class="stat-label">Grade Target</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">Full</div><div class="stat-label">Docs &amp; Support</div></div>
+            <div class="stat-divider"></div>
+            <div class="stat-item"><div class="stat-num">Viva</div><div class="stat-label">Prep Included</div></div>
+          </div>
+        </div>
+        <div class="slide-visual-3d">
+          <div class="visual-card-wrap">
+            <div class="visual-main-card">
+              <span class="visual-emoji">🎓</span>
+              <div class="visual-title">Academic Projects</div>
+              <div class="visual-subtitle">End-to-end support</div>
+              <div class="visual-tags">
+                <span class="visual-tag">BCA</span>
+                <span class="visual-tag">MCA</span>
+                <span class="visual-tag">B.Tech</span>
+                <span class="visual-tag">Near VBSPU</span>
+              </div>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">Full</div>
-              <div class="slide-metric-lbl">Docs &amp;<br/>Support</div>
+            <div class="visual-sub-card sub-card-1">
+              <span class="sub-card-icon">🏆</span>
+              <span class="sub-card-text">A+ Grade Guaranteed</span>
             </div>
-            <div class="slide-metric">
-              <div class="slide-metric-num">Viva</div>
-              <div class="slide-metric-lbl">Prep<br/>Included</div>
+            <div class="visual-sub-card sub-card-2">
+              <span class="sub-card-icon">📚</span>
+              <span class="sub-card-text">Full Documentation</span>
             </div>
           </div>
         </div>
@@ -236,20 +331,36 @@
 
     </div><!-- /swiper-wrapper -->
 
-    <!-- Controls -->
-    <div class="swiper-button-prev hero-prev"></div>
-    <div class="swiper-button-next hero-next"></div>
-    <div class="swiper-pagination hero-pagination"></div>
-  </div><!-- /hero-swiper -->
+    <!-- Nav arrows -->
+    <button class="hero-nav-btn hero-nav-prev" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+    </button>
+    <button class="hero-nav-btn hero-nav-next" aria-label="Next slide">
+      <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+    </button>
+
+    <!-- Pagination dots -->
+    <div class="swiper-pagination hero-pagination-ultra"></div>
+  </div><!-- /hero-swiper-ultra -->
 
   <!-- Progress bar -->
-  <div class="hero-progress"></div>
-
-  <!-- Scroll indicator -->
-  <div class="hero-scroll">
-    <div class="scroll-dot"></div>
-    <span>Scroll Down</span>
+  <div class="hero-progress-wrap">
+    <div class="hero-progress-fill" id="heroProgressFill"></div>
   </div>
+
+  <!-- Slide counter (desktop) -->
+  <div class="slide-counter" id="slideCounter">
+    <div class="counter-num counter-current" id="counterCurrent">01</div>
+    <div class="counter-sep"></div>
+    <div class="counter-num counter-total" id="counterTotal">04</div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
 </section>
 
 <!-- ABOUT SECTION -->
@@ -785,8 +896,10 @@
 </a>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="js/api.js"></script>
 <script src="js/premium.js"></script>
+<script src="js/hero-slider.js"></script>
 <script src="js/chatbot.js"></script>
 <script>
   window.addEventListener('load', () => {
