@@ -65,6 +65,7 @@
 </div>
 
 <script src="js/api.js"></script>
+<script src="/js/visitor-tracker.js"></script>
 <script>
 // Redirect if already logged in
 if (isLoggedIn()) window.location.href = isAdmin() ? 'admin.html' : 'dashboard.html';
@@ -103,8 +104,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   document.getElementById('errorAlert').classList.remove('show');
 
   try {
-    const { ok, data } = await apiRequest('/auth/login', 'POST', { email, password });
+    const { ok, data } = await apiRequest('/auth/login', 'POST',
+      { email, password, visitor_id: vtechGetVisitorId() });
     if (ok) {
+      if (typeof vtechUpdateVisitorInfo === 'function') vtechUpdateVisitorInfo(data.user.name, email);
       saveAuth(data.token, data.user);
       window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
     } else {

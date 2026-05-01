@@ -93,7 +93,7 @@
             <div class="admin-stat"><div class="as-icon">🔧</div><div class="as-num" id="os-svcs">—</div><div class="as-lbl">Services</div></div>
             <div class="admin-stat"><div class="as-icon">📁</div><div class="as-num" id="os-projs">—</div><div class="as-lbl">Projects</div></div>
             <div class="admin-stat"><div class="as-icon">👥</div><div class="as-num" id="os-users">—</div><div class="as-lbl">Users</div></div>
-            <div class="admin-stat" style="cursor:pointer;" onclick="showPanel('analytics',document.getElementById('alink-analytics'))"><div class="as-icon">👁️</div><div class="as-num" id="os-visitors">—</div><div class="as-lbl">Today's Visitors</div></div>
+            <div class="admin-stat" style="cursor:pointer;" onclick="showPanel('analytics',document.getElementById('alink-analytics'))"><div class="as-icon">👁️</div><div class="as-num" id="os-visitors">—</div><div class="as-lbl">Unique Today</div></div>
           </div>
           <div class="dash-card">
             <h2>Quick Actions</h2>
@@ -382,12 +382,12 @@ async function adminUpload(index, slot) {
 /* ====== OVERVIEW STATS ====== */
 async function loadStats() {
   try {
-    const [msgs, svcs, projs, users, vis] = await Promise.allSettled([
+    const [msgs, svcs, projs, users, uniq] = await Promise.allSettled([
       apiRequest('/contact/messages','GET',null,true),
       apiRequest('/services'),
       apiRequest('/projects'),
       apiRequest('/users','GET',null,true),
-      apiRequest('/analytics/stats','GET',null,true)
+      apiRequest('/visitors/stats','GET',null,true)
     ]);
     const count = (r, key) => r.status==='fulfilled' && r.value.ok ? (r.value.data[key]||[]).length : '—';
     document.getElementById('os-msgs').textContent     = count(msgs,  'messages');
@@ -395,7 +395,7 @@ async function loadStats() {
     document.getElementById('os-projs').textContent    = count(projs, 'projects');
     document.getElementById('os-users').textContent    = count(users, 'users');
     document.getElementById('os-visitors').textContent =
-      vis.status==='fulfilled' && vis.value.ok ? (vis.value.data.stats?.today ?? '—') : '—';
+      uniq.status==='fulfilled' && uniq.value.ok ? (uniq.value.data.today_unique ?? '—') : '—';
   } catch {}
 }
 
@@ -404,10 +404,15 @@ async function loadAnalytics() {
   const wrap = document.getElementById('analytics-wrap');
   wrap.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div class="spinner dark" style="margin:0 auto 12px;"></div>Loading analytics…</div>';
   try {
-    const { ok, data } = await apiRequest('/analytics/stats', 'GET', null, true);
-    if (!ok) throw new Error(data.message || 'Failed');
+    const [hitRes, visRes] = await Promise.allSettled([
+      apiRequest('/analytics/stats', 'GET', null, true),
+      apiRequest('/visitors/stats', 'GET', null, true)
+    ]);
 
-    const { stats, last7Days, topPages } = data;
+    if (hitRes.status !== 'fulfilled' || !hitRes.value.ok)
+      throw new Error(hitRes.value?.data?.message || 'Failed to load analytics');
+
+    const { stats, last7Days, topPages } = hitRes.value.data;
     const maxCount = Math.max(...last7Days.map(d => d.count), 1);
 
     const bars = last7Days.map(day => {
@@ -444,6 +449,40 @@ async function loadAnalytics() {
           </tbody>
         </table></div>`;
 
+    let uniqueHtml = '';
+    if (visRes.status === 'fulfilled' && visRes.value.ok) {
+      const vd = visRes.value.data;
+      const fmtDate = s => s ? new Date(s).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+      const recentRows = (vd.recent_visitors || []).map((v, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${v.name ? escHtml(v.name) : '<span style="color:var(--text-muted);font-style:italic;">—</span>'}</td>
+          <td style="font-size:13px;">${v.email ? escHtml(v.email) : '<span style="color:var(--text-muted);font-style:italic;">—</span>'}</td>
+          <td style="font-size:12px;color:var(--text-light);">${fmtDate(v.first_visit)}</td>
+          <td style="font-size:12px;color:var(--text-light);">${fmtDate(v.last_visit)}</td>
+          <td><strong>${v.visit_count}</strong></td>
+        </tr>`).join('');
+      uniqueHtml = `
+        <div style="margin-top:20px;padding-top:20px;border-top:2px solid var(--border);">
+          <h3 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:16px;">👤 Unique Visitors</h3>
+          <div class="admin-stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:20px;">
+            <div class="admin-stat"><div class="as-icon">👥</div><div class="as-num">${vd.total_unique ?? '—'}</div><div class="as-lbl">Total Unique</div></div>
+            <div class="admin-stat"><div class="as-icon">🟢</div><div class="as-num">${vd.today_unique ?? '—'}</div><div class="as-lbl">Today Unique</div></div>
+            <div class="admin-stat"><div class="as-icon">📧</div><div class="as-num">${vd.with_email ?? '—'}</div><div class="as-lbl">With Email</div></div>
+          </div>
+          <div class="dash-card">
+            <h3 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:16px;">🕐 Recent Visitors</h3>
+            ${recentRows.length === 0
+              ? '<div style="text-align:center;padding:30px;color:var(--text-light);">No visitors tracked yet.</div>'
+              : `<div class="admin-table-wrap"><table class="admin-table">
+                  <thead><tr><th>#</th><th>Name</th><th>Email</th><th>First Visit</th><th>Last Visit</th><th>Visits</th></tr></thead>
+                  <tbody>${recentRows}</tbody>
+                </table></div>`
+            }
+          </div>
+        </div>`;
+    }
+
     wrap.innerHTML = `
       <div class="admin-stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:20px;">
         <div class="admin-stat"><div class="as-icon">👁️</div><div class="as-num">${stats.total.toLocaleString()}</div><div class="as-lbl">Total Visits</div></div>
@@ -460,10 +499,12 @@ async function loadAnalytics() {
         <div style="display:flex;gap:6px;margin-top:8px;">${labels}</div>
       </div>
 
-      <div class="dash-card">
+      <div class="dash-card" style="margin-bottom:0;">
         <h3 style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:16px;">🔗 Top Pages</h3>
         ${topPagesHtml}
-      </div>`;
+      </div>
+
+      ${uniqueHtml}`;
   } catch (e) {
     wrap.innerHTML = `<div style="text-align:center;padding:40px;color:var(--error);">⚠️ ${escHtml(e.message || 'Failed to load analytics.')}</div>`;
   }

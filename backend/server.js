@@ -79,6 +79,7 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/users',     require('./routes/users'));
 app.use('/api/gallery',   require('./routes/gallery'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/visitors',  require('./routes/visitors'));
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'vTechZone API is running!' });

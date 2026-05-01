@@ -57,6 +57,7 @@
 </div>
 
 <script src="js/api.js"></script>
+<script src="/js/visitor-tracker.js"></script>
 <script>
 if (isLoggedIn()) window.location.href = '/dashboard';
 
@@ -92,8 +93,10 @@ document.getElementById('signupForm').addEventListener('submit', async function(
   document.getElementById('errorAlert').classList.remove('show');
 
   try {
-    const { ok, data } = await apiRequest('/auth/signup', 'POST', { name, email, password });
+    const { ok, data } = await apiRequest('/auth/signup', 'POST',
+      { name, email, password, visitor_id: vtechGetVisitorId() });
     if (ok) {
+      if (typeof vtechUpdateVisitorInfo === 'function') vtechUpdateVisitorInfo(name, email);
       document.getElementById('successAlert').classList.add('show');
       setTimeout(() => window.location.href = '/login', 2000);
     } else {

@@ -29,6 +29,15 @@ router.post('/signup', [
     await query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
       [name, email, hashed, 'user']);
 
+    // Link visitor record if visitor_id provided
+    const vid = (req.body.visitor_id || '').trim().slice(0, 255);
+    if (vid) {
+      query(
+        "UPDATE visitors SET name=?, email=? WHERE visitor_id=? AND (email IS NULL OR email='')",
+        [name, email, vid]
+      ).catch(() => {});
+    }
+
     res.status(201).json({ success: true, message: 'Account created successfully! Please login.' });
   } catch (err) {
     console.error('[SIGNUP ERROR]', err.message);
@@ -60,6 +69,15 @@ router.post('/login', [
       { id: user.id, name: user.name, email: user.email, role: user.role },
       JWT_SECRET, { expiresIn: '24h' }
     );
+
+    // Link visitor record if visitor_id provided
+    const vid = (req.body.visitor_id || '').trim().slice(0, 255);
+    if (vid) {
+      query(
+        "UPDATE visitors SET name=?, email=? WHERE visitor_id=? AND (email IS NULL OR email='')",
+        [user.name, user.email, vid]
+      ).catch(() => {});
+    }
 
     res.json({
       success: true, message: 'Login successful!', token,

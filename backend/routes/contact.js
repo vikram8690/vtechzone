@@ -16,6 +16,16 @@ router.post('/', [
   const { name, email, message } = req.body;
   try {
     await query('INSERT INTO messages (name, email, message) VALUES (?, ?, ?)', [name, email, message]);
+
+    // Link visitor record if visitor_id provided
+    const vid = (req.body.visitor_id || '').trim().slice(0, 255);
+    if (vid) {
+      query(
+        "UPDATE visitors SET name=?, email=? WHERE visitor_id=? AND (email IS NULL OR email='')",
+        [name, email, vid]
+      ).catch(() => {});
+    }
+
     res.status(201).json({ success: true, message: 'Message sent successfully! We will contact you soon.' });
   } catch (err) {
     console.error('[CONTACT ERROR]', err.message);
