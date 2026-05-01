@@ -175,17 +175,19 @@
   opacity: 0;
 }
 
-/* Heading wrapper — overflow:hidden gives the reveal effect */
+/* Heading wrapper */
 .slide-heading {
   margin: 0 0 22px;
   line-height: 1;
 }
 .hl {
   display: block;
-  overflow-x: visible; /* allow letters to breathe past container edge */
-  overflow-y: hidden;  /* clip vertically so words animate up from hidden */
+  overflow: visible;
+  /* clip-path hides words BELOW the line (translateY 110% start state)
+     while allowing unlimited horizontal overflow — no letter ever clips */
+  clip-path: inset(0 -600px 0 -600px);
   line-height: 1.1;
-  padding-bottom: 0.08em; /* prevent descender clipping at bottom */
+  padding-bottom: 0.1em;
 }
 .word {
   display: inline-block;
@@ -636,8 +638,8 @@
 }
 @media (max-width: 768px) {
   .hero-ultra { height: 100svh; min-height: 580px; max-height: 800px; }
-  .slide-content-ultra { padding: 90px 22px 0; padding-left: 22px; }
-  .word { font-size: clamp(42px, 11vw, 64px); letter-spacing: -1.5px; }
+  .slide-content-ultra { padding: 90px 20px 0; padding-left: 20px; }
+  .word { font-size: clamp(38px, 10vw, 60px); letter-spacing: -1.5px; }
   .slide-eyebrow { font-size: 11px; padding: 7px 14px; margin-bottom: 20px; }
   .slide-subheading { font-size: 14px; margin-bottom: 28px; }
   .slide-ctas { gap: 10px; margin-bottom: 32px; }
@@ -653,7 +655,8 @@
   .hero-scroll-hint { left: 16px; bottom: 32px; }
 }
 @media (max-width: 480px) {
-  .word { letter-spacing: -1px; }
+  .word { font-size: clamp(32px, 8.5vw, 48px); letter-spacing: -1px; }
+  .slide-content-ultra { padding: 80px 16px 0; padding-left: 16px; }
   .slide-eyebrow { font-size: 10.5px; }
   .slide-stats { display: none; }
   .cta-primary, .cta-secondary { padding: 12px 18px; font-size: 13px; }
