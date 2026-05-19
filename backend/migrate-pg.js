@@ -1,5 +1,6 @@
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -122,6 +123,20 @@ async function migrate() {
     );
   }
   console.log('✓ gallery_photos seeded');
+
+  // Create admin user (skip if already exists)
+  const adminEmail = 'vrjalalpur@gmail.com';
+  const existing = await pool.query('SELECT id FROM users WHERE email = $1', [adminEmail]);
+  if (existing.rows.length === 0) {
+    const hashed = await bcrypt.hash('go@Gle#1007', 12);
+    await pool.query(
+      'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)',
+      ['Admin', adminEmail, hashed, 'admin']
+    );
+    console.log('✓ admin user created');
+  } else {
+    console.log('✓ admin user already exists');
+  }
 
   console.log('\n✅ All tables ready.');
   await pool.end();
