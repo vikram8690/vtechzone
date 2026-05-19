@@ -1,0 +1,21 @@
+databases:
+  - name: vtechzone-db
+    databaseName: vtechzone
+    plan: free
+
+services:
+  - type: web
+    name: vtechzone
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: node backend/server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vtechzone-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production

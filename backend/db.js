@@ -1,15 +1,34 @@
 require('dotenv').config();
 
 /* ----------------------------------------------------------------
-   Unified DB driver — auto-detects MySQL vs MSSQL from env vars
-   MySQL  : set DB_HOST (production / AWS RDS)
-   MSSQL  : set DB_SERVER (local dev / SQL Server)
+   Unified DB driver — auto-detects driver from env vars
+   PostgreSQL : set DATABASE_URL  (Render)
+   MySQL      : set DB_HOST       (AWS RDS)
+   MSSQL      : fallback          (local dev / SQL Server)
 ---------------------------------------------------------------- */
 
 let queryFn;
+let dbType;
 
-if (process.env.DB_HOST) {
-  /* ---- MySQL (production) ---- */
+if (process.env.DATABASE_URL) {
+  /* ---- PostgreSQL (Render) ---- */
+  const { Pool } = require('pg');
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+  dbType = 'pg';
+  console.log('DB driver: PostgreSQL (Render)');
+
+  const toPositional = sql => { let i = 0; return sql.replace(/\?/g, () => `$${++i}`); };
+
+  queryFn = async (sqlText, params = []) => {
+    const result = await pool.query(toPositional(sqlText), params);
+    return { recordset: result.rows };
+  };
+
+} else if (process.env.DB_HOST) {
+  /* ---- MySQL (AWS RDS) ---- */
   const mysql = require('mysql2/promise');
   const pool  = mysql.createPool({
     host:               process.env.DB_HOST,
@@ -21,6 +40,7 @@ if (process.env.DB_HOST) {
     connectionLimit:    10,
     ssl:                { rejectUnauthorized: false },
   });
+  dbType = 'mysql';
   console.log('DB driver: MySQL @', process.env.DB_HOST);
 
   queryFn = async (sqlText, params = []) => {
@@ -42,6 +62,7 @@ if (process.env.DB_HOST) {
     connectionTimeout: 30000,
     requestTimeout:    30000,
   };
+  dbType = 'mssql';
   let pool;
   async function getPool() {
     if (!pool) {
@@ -55,11 +76,10 @@ if (process.env.DB_HOST) {
     const p   = await getPool();
     const req = p.request();
     let idx = 0;
-    /* convert ? placeholders → @p0, @p1 … */
     const converted = sqlText.replace(/\?/g, () => '@p' + idx++);
     params.forEach((val, i) => req.input('p' + i, val));
-    return req.query(converted);   /* returns { recordset: [] } */
+    return req.query(converted);
   };
 }
 
-module.exports = { query: queryFn };
+module.exports = { query: queryFn, dbType };

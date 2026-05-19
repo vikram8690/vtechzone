@@ -1,6 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-const { query } = require('../db');
+const { query, dbType } = require('../db');
 const { verifyToken, adminOnly } = require('../middleware/auth');
 
 /* ──────────────────────────────────────────────────────────────
@@ -20,14 +20,25 @@ router.post('/track', async (req, res) => {
   const ua = (user_agent || req.headers['user-agent'] || '').slice(0, 500);
 
   try {
-    await query(
-      `INSERT INTO visitors (visitor_id, user_agent, ip_address)
-       VALUES (?, ?, ?)
-       ON DUPLICATE KEY UPDATE
-         last_visit  = NOW(),
-         visit_count = visit_count + 1`,
-      [visitor_id, ua, ip]
-    );
+    if (dbType === 'pg') {
+      await query(
+        `INSERT INTO visitors (visitor_id, user_agent, ip_address)
+         VALUES (?, ?, ?)
+         ON CONFLICT (visitor_id) DO UPDATE SET
+           last_visit  = NOW(),
+           visit_count = visitors.visit_count + 1`,
+        [visitor_id, ua, ip]
+      );
+    } else {
+      await query(
+        `INSERT INTO visitors (visitor_id, user_agent, ip_address)
+         VALUES (?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           last_visit  = NOW(),
+           visit_count = visit_count + 1`,
+        [visitor_id, ua, ip]
+      );
+    }
     res.json({ success: true });
   } catch (e) {
     console.error('[TRACK VISITOR]', e.message);
